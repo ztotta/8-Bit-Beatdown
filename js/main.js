@@ -2,9 +2,9 @@
 //// Mary Rose Cook livecoding
 console.log("main js loaded")
 //
-var bpm = 95
-var beat = 160 / bpm 
-var loopMs = beat * 1000 * 4
+var bpm = 95; 
+var beat = 160 / bpm;
+var loopMs = beat * 1000 * 4;
 var looper = true;
 
 //// create instruments for each sound. WORKING
@@ -54,7 +54,7 @@ stepIdMaker();
 //// assign unique class to quarter notes to clarify the grid
 function quarterNoteMaker () {
     for (var i=0; i<= 63; i+=4) {
-        $('.kickSteps').eq(i).addClass('quarterNote')
+        $('.kickSteps').eq(i).addClass('quarterNote');
     }
     for (var i=0; i<= 63; i+=4) {
         $('.snareSteps').eq(i).addClass('quarterNote')
@@ -110,7 +110,7 @@ function snareLoop() {
     var beatCounter = 0;
     for (var i=0; i<=63; i++) {
         if (snareBool[i]) { snare.play({wait : beat * beatCounter}) }
-        if (!looper) { return } // not stopping immediately
+//        if (!looper) { return } // not stopping immediately
         beatCounter += 0.0625;
     }
 }
@@ -135,84 +135,74 @@ function hiHatOpLoop() {
 //// it makes it through, but shoots all 64 divs at same time
 function metronome() {
 //    var beatCounter = 0;
-    var $kickSteps = $('.kickSteps');
-    function doSetTimeout(i) {
-        setTimeout(function() {
-            $($kickSteps[i]).addClass('metronome');
-        }, 2000);
+//    var $kickSteps = $('.kickSteps');
+//    function doSetTimeout(i) {
+//        setTimeout(function() {
+//            $($kickSteps[i]).addClass('metronome');
+//        }, 2000);
+//    }
+//    for (var i=0; i<=63; i++) { doSetTimeout(i) };
+    
+    // make quarter notes toggle class on beat
+    var metronomeMs = beat * 250;
+    for (var i=0; i<=63; i++){
+        setInterval(function(metInt) {
+            console.log('quarterNote setTimeout entered')
+//          debugger;
+            var $quarterMetronome = $('.quarterNote').eq(i);
+            $quarterMetronome.addClass('metronome');
+        }, metronomeMs);
+        metronomeMs += 2000; 
     }
-    for (var i=0; i<=63; i++) { doSetTimeout(i) };
 }
 
+//// call computer's beat
+//// connect 'click' to #playComputerLoop
+//// make computer taunt after user hears it's beat
+$('#startComputerLoop').click(function() {console.log('play linnked')})
+
 //// call all loops on WORKING
+//// stop loops immediately NOT working
 function startLoops() {
+//    if (!looper) { return } 
     kickLoop();
     snareLoop();
     hiHatCLoop();
     hiHatOpLoop();
+//    metronome(); 
     //// setInteral relaunches at intervals of 1 loop WORKING
-    setInterval(function() {
-      console.log('setIntervalz entered')
-      if (!looper) { return } // doesn't stop immediately...
+    setInterval(function(loopInt) {
+      if (!looper) { clearInterval(loopInt); return } 
+    //// doesn't stop immediately...
+    //// stop loop with looper = false, BUT
+    //// start with startLoops() so it starts at the bottom
+    //// and doesn't keep the old loop
+      console.log('setIntervalz entered after if')
       snareLoop();
       kickLoop();
       hiHatCLoop();
       hiHatOpLoop();
+//      metronome();
     }, loopMs)
 }
 
-//// make computer taunt at regular intervals
-//function tauntLoop () {
-//    setInterval(function() {
-//      bandLoop();
-//    }, 15000);
-//}
-//
-//// stop loop on user click of 'stop'
-//function stopLoop () {
-//    // not sure how to do this...
-//}
-//
-//
-//// assign id's to each instrument's .steps class
-//for (var i = 0; i <= 63; i++) {
-//    $('.stepsKick[i]').id('kick' + i);
-//    $('.stepsSnare[i]').id('snare' + i);
-//    $('.stepsHiHatC[i]').id('hiHatC' + i);
-//    $('.stepsHiHatOp[i]').id('hiHatOp' + i);
-//}
-//
-//// check for victory (called below) (all step var's match the key's true/false's)
+//// toggle b/t "play" and "pause" User beat (text and action)
+$('#toggleUserLoop').click(function(e) {
+    if (e.target.innerHTML === "play_your_wanna-beat") { e.target.innerHTML = "pause_your_wanna-beat";
+    startLoops(); looper = true }
+    else { e.target.innerHTML = "play_your_wanna-beat"; 
+    looper = false }
+    
+})
+
+
+
+//// check for victory (all step var's match the key's bool values)
 //function winCheck() {
 //    if (kick0 && !kick1 && kick2 && etc) { applause.play({wait : beat * 0.000});
-//    philCongrats.play({wait : beat * 3.000}) }
+//    computerCongrats.play({wait : beat * 3.000}) }
 //}
 //
-//// create click listener for each step (choose 1 parent and assign to all children, jquery?)
-//// if the step's var was alreadey true, turn it false. If already false, turn true
-//$('#stepPanels').on('click', 'steps', function() {
-//    for (var i=0; i <= 63; i++) {
-//        if (this.id === 'kick' + i) {
-//            if ('kick' + i) { 'kick' + i === false }
-//            else { 'kick' + i = true }
-//        }
-//        else if (this.id === 'snare' + i) {
-//            if ('snare' + i) { 'snare' + i === false }
-//            else { 'snare' + i = true }
-//        }
-//        else if (this.id === 'hiHatC' + i) {
-//            if ('hiHatC' + i) { 'hiHatC' + i === false }
-//            else { 'hiHatC' + i = true }
-//        }
-//        else if (this.id === 'hiHatOp' + i) {
-//            if ('hiHatOp' + i) { 'hiHatOp' + i === false }
-//            else { 'hiHatOp' + i = true }
-//        }
-//    }
-//    // check for victory after each click
-//    winCheck();
-//}); 
-
 
 //// BEATS:
 //// MEASURE 1: 00 01 02 03 | 04 05 06 07 | 08 09 10 11 | 12 13 14 15

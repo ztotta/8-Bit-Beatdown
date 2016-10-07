@@ -1,6 +1,6 @@
 /* d  */
   
-body{
+body{ 
 /*    margin: auto;*/
     background-color: antiquewhite;
 }
@@ -12,15 +12,41 @@ h1, h2 {
 /*    background-color: #d4c9b2;*/
     border: 10px solid #61b1ff;
     padding: 10px 0 10px 0;
-    width: 95%;
+/*    width: 95%;*/
 }
 
 h1 {
     font-size: 66px;
+    width: 1000px;
 }
 
 h2 {
     font-size: 48px;
+    padding: 10px;
+    width: 980px;
+/*    text-align: center;*/
+}
+
+#playBar {
+}
+
+#startComputerLoop {
+/*    padding: 10px*/
+    float: left;
+    clear: none;
+}
+
+#toggleUserLoop {
+    float: right;
+    clear: none;
+}
+
+#startComputerLoop:hover {
+    color: lightslategray;
+}
+
+#toggleUserLoop:hover {
+    color: lightslategray;
 }
 
 #instrumentsPanel {
@@ -93,5 +119,3 @@ h2 {
 .metronome {
     background-color: coral;
 }
-
-
