@@ -1,2 +1,97 @@
 /* d  */
- 
+  
+body{
+/*    margin: auto;*/
+    background-color: antiquewhite;
+}
+
+h1, h2 {
+    text-align: center;
+    font-family: 'VT323', monospace;
+    background-color: antiquewhite;
+/*    background-color: #d4c9b2;*/
+    border: 10px solid #61b1ff;
+    padding: 10px 0 10px 0;
+    width: 95%;
+}
+
+h1 {
+    font-size: 66px;
+}
+
+h2 {
+    font-size: 48px;
+}
+
+#instrumentsPanel {
+/*
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+*/
+    display: flex;
+    flex-direction: column;
+/*    flex-wrap: wrap;*/
+    justify-content: center;
+    align-items: center;
+    align-content: space-between;
+    height: 1000px;
+    width: 1000px;
+    background-color: #cbffed;
+    border: 10px solid #61b1ff;
+}
+
+#kickPanel, #snarePanel, #hiHatCPanel, #hiHatOpPanel {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 22%;
+    width: 95%;
+    margin: auto;
+    background-color: #61b1ff;
+    border: 10px solid #fdf7ef;
+/*    padding: 10px;*/
+}
+
+.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps {
+    height: 20%; 
+    width: 5.7%;
+    background-color: antiquewhite;
+    border: .5px solid black;
+    display: inline-block;
+    font-size: 12px;
+    text-align: center;
+}
+
+.kickSteps:hover, .snareSteps:hover, .hiHatCSteps:hover, .hiHatOpSteps:hover {
+    height: 20%; 
+    width: 5.7%;
+    background-color: #cbffed;
+    border: .5px solid black;
+    display: inline-block;
+    font-size: 12px;
+    text-align: center;
+}
+
+.litSteps {
+    background-color: #cbffed;
+}
+
+.quarterNote {
+    background-color: #fdf7ef;
+}
+/*http://www.color-hex.com/color/faebd7*/
+
+.quarterNote.litSteps {
+    background-color: aquamarine;
+}
+
+.metronome {
+    background-color: coral;
+}
+
+

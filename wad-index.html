@@ -2,13 +2,290 @@
 <html>
 <head> 
     <meta charset="UTF-8">
-    <<link rel="stylesheet" href="wad-main.css"></link>
-    <title>WADz</title>
+    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+    <link rel="stylesheet" href="wad-main.css">
+    <title>WADz</title>  
 </head>
 <body>
-    <h1>WAD testzz</h1>
-    <h2>time for a wad, y'all</h2>
-<script src="../API-library/wad/build/wad.min.js"></script>
-<script src="wad-script.js"></script>
+    <h1>8_Bit_Beatdown</h1>
+    <h2>PRINT('this_machine_thinks_it_has_rhythm')</h2>
+<!--
+    <div class="steps" id="kick0">kick0</div>
+    <div class="steps" id="kick1">kick1</div>
+    <div class="steps" id="kick2">kick2</div>
+    <div class="steps" id="kick3">kick3</div> 
+-->
+    <div id='instrumentsPanel'>
+        <div id='kickPanel'>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+            <div class='kickSteps'></div>
+        </div>
+        <div id='snarePanel'>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+            <div class='snareSteps'></div>
+        </div>
+           <div id='hiHatCPanel'>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+            <div class='hiHatCSteps'></div>
+        </div>
+        <div id='hiHatOpPanel'>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+            <div class='hiHatOpSteps'></div>
+        </div>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" ></script>
+    <script src="wadz.min.js"></script> 
+    <script src="main.js"></script>
 </body>
+<footer>
+</footer>
 </html>  
