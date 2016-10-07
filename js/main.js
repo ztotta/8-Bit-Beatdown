@@ -8,11 +8,15 @@ var loopMs = beat * 1000 * 4;
 var looper = true;
 
 //// create instruments for each sound. WORKING
-var kick = new Wad({source : 'assets/kick.mp3'});
+var kick = new Wad({source: 'assets/kickEdit.mp3'});
 var snare = new Wad(Wad.presets.snare); 
     snare.setVolume(9)
 var hiHatC = new Wad(Wad.presets.hiHatClosed);
 var hiHatOp = new Wad(Wad.presets.hiHatOpen);
+//var computerLoopEasy = new Wad({source: 'assets/computerLoopEasy.mp3'});
+var computerLoopEasy = new Wad({
+    source : 'assets/computerLoopEasy.mp3',
+    env : { attack : 0, decay : 10000, sustain : 1, hold : 1, release : 1 }})
 ////var applause = new Wad {}
 ////var computerMocking = new Wad {}
 ////var computerCongrats = new Wad {}
@@ -29,10 +33,6 @@ for (var i=0; i<64; i++) { hiHatCBool.push(false)}
 
 var hiHatOpBool = [];
 for (var i=0; i<64; i++) { hiHatOpBool.push(false) }
-
-//// create booleans to silence loops (turn volume down?) TO-DO
-
-
 
 //// assign id's and text to each step. WORKING
 function stepIdMaker () {
@@ -132,7 +132,7 @@ function hiHatOpLoop() {
 }
 
 //// make divs light up with metronome NOT working
-//// it makes it through, but shoots all 64 divs at same time
+//// it makes it through, but affects all 64 divs at same time
 function metronome() {
 //    var beatCounter = 0;
 //    var $kickSteps = $('.kickSteps');
@@ -159,7 +159,7 @@ function metronome() {
 //// call computer's beat
 //// connect 'click' to #playComputerLoop
 //// make computer taunt after user hears it's beat
-$('#startComputerLoop').click(function() {console.log('play linnked')})
+$('#startComputerLoop').click(function() { computerLoopEasy.play(); console.log('play dammit!') })
 
 //// call all loops on WORKING
 //// stop loops immediately NOT working
@@ -169,6 +169,7 @@ function startLoops() {
     snareLoop();
     hiHatCLoop();
     hiHatOpLoop();
+    //// launch metronome sequencer at same time
 //    metronome(); 
     //// setInteral relaunches at intervals of 1 loop WORKING
     setInterval(function(loopInt) {
@@ -182,9 +183,13 @@ function startLoops() {
       kickLoop();
       hiHatCLoop();
       hiHatOpLoop();
+      //// launch metronome sequencer at same time
 //      metronome();
     }, loopMs)
 }
+
+//// currently after pausing and then playing the beat again,
+//// it launches but then launches another loop shortly after
 
 //// toggle b/t "play" and "pause" User beat (text and action)
 $('#toggleUserLoop').click(function(e) {
@@ -199,10 +204,18 @@ $('#toggleUserLoop').click(function(e) {
 
 //// check for victory (all step var's match the key's bool values)
 //function winCheck() {
-//    if (kick0 && !kick1 && kick2 && etc) { applause.play({wait : beat * 0.000});
-//    computerCongrats.play({wait : beat * 3.000}) }
+//    if (kickBool[0] && !kickBool[1] && !kickBool[2] && !kickBool[3] && !kickBool[4] && !kickBool[5] && !kickBool[6] && !kickBool[7] && !kickBool[8] && !kickBool[9] && !kickBool[10] && !kickBool[11] && !kickBool[12] && !kickBool[13] && !kickBool[14] && !kickBool[15] && kickBool[16] && !kickBool[17] && !kickBool[18] && !kickBool[19] && !kickBool[20] && !kickBool[21] && !kickBool[22] && !kickBool[23] && !kickBool[24] &!kickBool[25] && !kickBool[26] && !kickBool[27] && !kickBool[28] && !kickBool[29] && !kickBool[30] && !kickBool[31] && kickBool[32] && !kickBool[33] && !kickBool[34] && !kickBool[18] && !kickBool[19] && !kickBool[20] && !kickBool[21] && !kickBool[22] && !kickBool[23] && !kickBool[24] &!kickBool[25] && !kickBool[26] && !kickBool[27] && !kickBool[28] && !kickBool[29] && !kickBool[30] && !kickBool[31] && kickBool[32] && !kickBool[33] && !kickBool[34]) {
+//        if (snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[] && snareBool[]) {
+//            if (hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[] && hiHatCBool[]) {
+//                if (hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[] && hiHatOpBool[]) {
+//                    console.log('User victoryyyyyy!!!')
+//                };
+//            };
+//        };
+//    };
 //}
-//
+
+//// starting at kickBool[35] false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
 
 //// BEATS:
 //// MEASURE 1: 00 01 02 03 | 04 05 06 07 | 08 09 10 11 | 12 13 14 15

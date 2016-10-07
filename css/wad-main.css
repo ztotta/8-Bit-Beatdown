@@ -66,6 +66,8 @@ h2 {
     width: 1000px;
     background-color: #cbffed;
     border: 10px solid #61b1ff;
+    font-family: 'VT323', monospace;
+/*    font-size: 600px; */
 }
 
 #kickPanel, #snarePanel, #hiHatCPanel, #hiHatOpPanel {
