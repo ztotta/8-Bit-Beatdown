@@ -7,6 +7,7 @@ var beat = 160 / bpm;
 var loopMs = beat * 1000 * 4;
 var looper = true;
 var victory = false;
+var instructions = true;
 
 //// create instruments for each sound. WORKING
 var kick = new Wad({source: 'assets/kickEdit.mp3'});
@@ -18,6 +19,10 @@ var hiHatOp = new Wad(Wad.presets.hiHatOpen);
 var computerLoopEasy = new Wad({
     source : 'assets/computerLoopEasy.mp3',
     env : { attack : 0, decay : 10000, sustain : 1, hold : 1, release : 1 }})
+var computerInstructions = new Wad({
+    source : 'assets/computerInstructions.mp3',
+    env : { attack : 0, decay : 100000, sustain : 1, hold : 1, release : 1 }})
+    computerInstructions.setVolume(2.2)
 ////var applause = new Wad {}
 ////var computerMocking = new Wad {}
 ////var computerCongrats = new Wad {}
@@ -166,9 +171,32 @@ function metronome() {
     }
 }
 
-//// call computer's beat
-//// connect 'click' to #playComputerLoop
-//// make computer taunt after user hears it's beat
+//// deliver instructions on click
+//// toggle "Instructions" & "Print"
+var $instructions = $('#instructions')
+$($instructions).click(function() {
+    computerInstructions.play();
+    $($instructions).text(`PRINT("this_machine's_got_rhythm")`)
+});
+$instructions.hover(function() {
+    $($instructions).text('#_____Instructions_____#')
+}, function() {
+    $($instructions).text(`PRINT("this_machine's_got_rhythm")`)
+});
+
+
+$( "li" ).hover(
+  function() {
+    $( this ).append( $( "<span> ***</span>" ) );
+  }, function() {
+    $( this ).find( "span:last" ).remove();
+  }
+);
+
+
+//// call computer's beat WORKING
+//// connect 'click' to #playComputerLoop WORKING
+//// make computer taunt after user hears it's beat NOT yet
 $('#startComputerLoop').click(function() { computerLoopEasy.play(); console.log('play dammit!') })
 
 //// call all loops on WORKING
