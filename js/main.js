@@ -6,6 +6,7 @@ var bpm = 95;
 var beat = 160 / bpm;
 var loopMs = beat * 1000 * 4;
 var looper = true;
+var victory = false;
 
 //// create instruments for each sound. WORKING
 var kick = new Wad({source: 'assets/kickEdit.mp3'});
@@ -37,16 +38,16 @@ for (var i=0; i<64; i++) { hiHatOpBool.push(false) }
 //// assign id's and text to each step. WORKING
 function stepIdMaker () {
     for (var i=0; i<= 63; i++) {
-        $('.kickSteps').eq(i).attr('id', '#kick' + i).text(i);
+        $('.kickSteps').eq(i).attr('id', '#kick' + i);
     }
     for (var i=0; i<= 63; i++) {
-        $('.snareSteps').eq(i).attr('id', '#snare' + i).text(i); 
+        $('.snareSteps').eq(i).attr('id', '#snare' + i); 
     }
     for (var i=0; i<= 63; i++) {
-        $('.hiHatCSteps').eq(i).attr('id', '#hiHatC' + i).text(i);
+        $('.hiHatCSteps').eq(i).attr('id', '#hiHatC' + i);
     }
     for (var i=0; i<= 63; i++) {
-        $('.hiHatOpSteps').eq(i).attr('id', '#hiHatOp' + i).text(i);
+        $('.hiHatOpSteps').eq(i).attr('id', '#hiHatOp' + i);
     }
 }
 stepIdMaker();
@@ -131,6 +132,15 @@ function hiHatOpLoop() {
     }
 }
 
+//// launch entire kit's loops
+function kitLoop() {
+    kickLoop();
+    snareLoop();
+    hiHatCLoop();
+    hiHatOpLoop();
+//    metronome();
+}
+
 //// make divs light up with metronome NOT working
 //// it makes it through, but affects all 64 divs at same time
 function metronome() {
@@ -162,15 +172,10 @@ function metronome() {
 $('#startComputerLoop').click(function() { computerLoopEasy.play(); console.log('play dammit!') })
 
 //// call all loops on WORKING
-//// stop loops immediately NOT working
+//// stop loops immediately: NOT working
 function startLoops() {
 //    if (!looper) { return } 
-    kickLoop();
-    snareLoop();
-    hiHatCLoop();
-    hiHatOpLoop();
-    //// launch metronome sequencer at same time
-//    metronome(); 
+    kitLoop();
     //// setInteral relaunches at intervals of 1 loop WORKING
     setInterval(function(loopInt) {
       if (!looper) { clearInterval(loopInt); return } 
@@ -179,43 +184,43 @@ function startLoops() {
     //// start with startLoops() so it starts at the bottom
     //// and doesn't keep the old loop
       console.log('setIntervalz entered after if')
-      snareLoop();
-      kickLoop();
-      hiHatCLoop();
-      hiHatOpLoop();
-      //// launch metronome sequencer at same time
-//      metronome();
+      kitLoop();
     }, loopMs)
 }
 
+//// text toggle WORKING
+//// loop toggle NOT working...buggy...almost...
 //// currently after pausing and then playing the beat again,
 //// it launches but then launches another loop shortly after
-
 //// toggle b/t "play" and "pause" User beat (text and action)
-$('#toggleUserLoop').click(function(e) {
-    if (e.target.innerHTML === "play_your_wanna-beat") { e.target.innerHTML = "pause_your_wanna-beat";
-    startLoops(); looper = true }
-    else { e.target.innerHTML = "play_your_wanna-beat"; 
-    looper = false }
-    
-})
+if (!victory) {
+    $('#toggleUserLoop').click(function(e) {
+        if (e.target.innerHTML === "play_your_wanna_beat") { e.target.innerHTML = "pause_your_wanna_beat";
+            startLoops(); looper = true }
+        else { e.target.innerHTML = "play_your_wanna_beat"; 
+        looper = false }  
+})}
+
+//// call winCheck on any click?
 
 
 //// WORKING ////
-//// check for victory (all step var's match the key's bool values) 
+//// check for victory on every div click (all step var's match the key's bool values) 
+$('div').click(winCheck);
 function winCheck() {
     if (kickBool[0] && !kickBool[1] && !kickBool[2] && !kickBool[3] && !kickBool[4] && !kickBool[5] && !kickBool[6] && !kickBool[7] && !kickBool[8] && !kickBool[9] && !kickBool[10] && !kickBool[11] && !kickBool[12] && !kickBool[13] && !kickBool[14] && !kickBool[15] && kickBool[16] && !kickBool[17] && !kickBool[18] && !kickBool[19] && !kickBool[20] && !kickBool[21] && !kickBool[22] && !kickBool[23] && !kickBool[24] && !kickBool[25] && !kickBool[26] && !kickBool[27] && !kickBool[28] && !kickBool[29] && !kickBool[30] && !kickBool[31] && kickBool[32] && !kickBool[33] && !kickBool[34] && !kickBool[35] && !kickBool[36] && !kickBool[37] && !kickBool[38] && !kickBool[39] && !kickBool[40] && !kickBool[41] &!kickBool[42] && !kickBool[43] && !kickBool[44] && !kickBool[45] && !kickBool[46] && !kickBool[47] && kickBool[48] && !kickBool[49] && !kickBool[50] && !kickBool[51] && !kickBool[52] && !kickBool[53] && !kickBool[54] && !kickBool[55] && !kickBool[56] && !kickBool[57] && !kickBool[58] && !kickBool[59] && !kickBool[60] && !kickBool[61] && !kickBool[62] && !kickBool[63]) {
         if (!snareBool[0] && !snareBool[1] && !snareBool[2] && !snareBool[3] && !snareBool[4] && !snareBool[5] && !snareBool[6] && !snareBool[7] && snareBool[8] && !snareBool[9] && !snareBool[10] && !snareBool[11] && !snareBool[12] && !snareBool[13] && !snareBool[14] && !snareBool[15] && !snareBool[16] && !snareBool[17] && !snareBool[18] && !snareBool[19] && !snareBool[20] && !snareBool[21] && !snareBool[22] && !snareBool[23] && snareBool[24] && !snareBool[25] && !snareBool[26] && !snareBool[27] && !snareBool[28] && !snareBool[29] && snareBool[30] && !snareBool[31] && !snareBool[32] && !snareBool[33] && !snareBool[34] && !snareBool[35] && !snareBool[36] && !snareBool[37] && !snareBool[38] && !snareBool[39] && snareBool[40] && !snareBool[41] && !snareBool[41] && !snareBool[43] && !snareBool[44] && !snareBool[45] && !snareBool[46] && !snareBool[47] && !snareBool[48] && !snareBool[49] && !snareBool[50] && !snareBool[51] && !snareBool[52] && !snareBool[53] && !snareBool[54] && !snareBool[55] && snareBool[56] && !snareBool[57] && snareBool[58] && !snareBool[59] && !snareBool[60] && !snareBool[61] && snareBool[62] && !snareBool[63]) {
             if (!hiHatCBool[0] && !hiHatCBool[1] && hiHatCBool[2] && !hiHatCBool[3] && !hiHatCBool[4] && !hiHatCBool[5] && !hiHatCBool[6] && !hiHatCBool[7] && !hiHatCBool[8] && !hiHatCBool[9] && !hiHatCBool[10] && !hiHatCBool[11] && !hiHatCBool[12] && !hiHatCBool[13] && !hiHatCBool[14] && !hiHatCBool[15] && !hiHatCBool[16] && !hiHatCBool[17] && hiHatCBool[18] && !hiHatCBool[19] && !hiHatCBool[20] && !hiHatCBool[21] && !hiHatCBool[22] && !hiHatCBool[23] && !hiHatCBool[24] && !hiHatCBool[25] && !hiHatCBool[26] && !hiHatCBool[27] && !hiHatCBool[28] && !hiHatCBool[29] && !hiHatCBool[30] && !hiHatCBool[31] && !hiHatCBool[32] && !hiHatCBool[33] && hiHatCBool[34] && !hiHatCBool[35] && !hiHatCBool[36] && !hiHatCBool[37] && !hiHatCBool[38] && !hiHatCBool[39] && !hiHatCBool[40] && !hiHatCBool[41] && !hiHatCBool[41] && !hiHatCBool[43] && !hiHatCBool[44] && !hiHatCBool[45] && !hiHatCBool[46] && !hiHatCBool[47] && !hiHatCBool[48] && !hiHatCBool[49] && hiHatCBool[50] && !hiHatCBool[51] && !hiHatCBool[52] && !hiHatCBool[53] && !hiHatCBool[54] && !hiHatCBool[55] && !hiHatCBool[56] && !hiHatCBool[57] && !hiHatCBool[58] && !hiHatCBool[59] && hiHatCBool[60] && !hiHatCBool[61] && !hiHatCBool[62] && !hiHatCBool[63]) {
                 if (!hiHatOpBool[0] && !hiHatOpBool[1] && !hiHatOpBool[2] && !hiHatOpBool[3] && !hiHatOpBool[4] && !hiHatOpBool[5] && !hiHatOpBool[6] && !hiHatOpBool[7] && !hiHatOpBool[8] && !hiHatOpBool[9] && !hiHatOpBool[10] && !hiHatOpBool[11] && hiHatOpBool[12] && !hiHatOpBool[13] && !hiHatOpBool[14] && !hiHatOpBool[15] && !hiHatOpBool[16] && !hiHatOpBool[17] && !hiHatOpBool[18] && !hiHatOpBool[19] && !hiHatOpBool[20] && !hiHatOpBool[21] && !hiHatOpBool[22] && !hiHatOpBool[23] && !hiHatOpBool[24] && !hiHatOpBool[25] && !hiHatOpBool[26] && !hiHatOpBool[27] && !hiHatOpBool[28] && !hiHatOpBool[29] && !hiHatOpBool[30] && !hiHatOpBool[31] && !hiHatOpBool[32] && !hiHatOpBool[33] && !hiHatOpBool[34] && !hiHatOpBool[35] && !hiHatOpBool[36] && !hiHatOpBool[37] && !hiHatOpBool[38] && !hiHatOpBool[39] && !hiHatOpBool[40] && !hiHatOpBool[41] && !hiHatOpBool[41] && !hiHatOpBool[43] && hiHatOpBool[44] && !hiHatOpBool[45] && !hiHatOpBool[46] && !hiHatOpBool[47] && !hiHatOpBool[48] && !hiHatOpBool[49] && !hiHatOpBool[50] && !hiHatOpBool[51] && !hiHatOpBool[52] && !hiHatOpBool[53] && !hiHatOpBool[54] && !hiHatOpBool[55] && !hiHatOpBool[56] && !hiHatOpBool[57] && !hiHatOpBool[58] && !hiHatOpBool[59] && !hiHatOpBool[60] && !hiHatOpBool[61] && !hiHatOpBool[62] && !hiHatOpBool[63]) {
-                    console.log('User victoryyyyyy!!!')
+                    console.log('User victoryyyyyy!!!');
+                    $('#toggleUserLoop').text("play_your_objectvely_superior_beat");
+                    victory = true;
                 };
             };
         };
-    };
+    }
+    else { console.log('no win yet!') }
 }
-
-//// starting at kickBool[35] false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
 
 //// BEATS:
 //// MEASURE 1: 00 01 02 03 | 04 05 06 07 | 08 09 10 11 | 12 13 14 15

@@ -82,7 +82,7 @@ h2 {
     margin: auto;
     background-color: #61b1ff;
     border: 10px solid #fdf7ef;
-/*    padding: 10px;*/
+    padding: 0px;
 }
 
 .kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps {
@@ -90,9 +90,12 @@ h2 {
     width: 5.7%;
     background-color: antiquewhite;
     border: .5px solid black;
-    display: inline-block;
-    font-size: 12px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+/*    display: inline-block;  keeps text centered...  */
+    font-size: 36px;
+    font-weight: bold;
 }
 
 .kickSteps:hover, .snareSteps:hover, .hiHatCSteps:hover, .hiHatOpSteps:hover {
