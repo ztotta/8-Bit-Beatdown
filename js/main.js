@@ -17,9 +17,9 @@ var looper = true;
 //// create instruments for each sound. WORKING
 var kick = new Wad({source: 'assets/kickEdit.mp3'});
 var snare = new Wad(Wad.presets.snare); 
-    snare.setVolume(9)
 var hiHatC = new Wad(Wad.presets.hiHatClosed);
 var hiHatOp = new Wad(Wad.presets.hiHatOpen);
+var stepRemoveFx = new Wad({source: 'assets/stepRemoveFx.mp3', volume: .4});
 //var computerLoopEasy = new Wad({source: 'assets/computerLoopEasy.mp3'});
 var computerLoopEasy = new Wad({
     source : 'assets/computerLoopEasy.mp3',
@@ -85,26 +85,50 @@ quarterNoteMaker();
 $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) {
     for (var i=0; i<=63; i++) {
         if (event.target.id === '#kick' + i) {
-            if (kickBool[i] === false) { kickBool[i] = true; $(event.target).addClass('litSteps') }
-            else { kickBool[i] = false; $(event.target).removeClass('litSteps') }  
+            if (kickBool[i] === false) { 
+                kickBool[i] = true; $(event.target).addClass('litSteps'); 
+                kick.play();
+            }
+            else { 
+                kickBool[i] = false; $(event.target).removeClass('litSteps');
+                stepRemoveFx.play();
+            } 
         }
     }
     for (var i=0; i<=63; i++) {
         if (event.target.id === '#snare' + i) {
-            if (snareBool[i] === false) { snareBool[i] = true; $(event.target).addClass('litSteps') }
-            else { snareBool[i] = false; $(event.target).removeClass('litSteps') }  
+            if (snareBool[i] === false) { 
+                snareBool[i] = true; $(event.target).addClass('litSteps');
+                snare.play({volume: 6.5});
+            }
+            else { 
+                snareBool[i] = false; $(event.target).removeClass('litSteps');
+                stepRemoveFx.play();
+            }  
         }
     }
     for (var i=0; i<=63; i++) {
         if (event.target.id === '#hiHatC' + i) {
-            if (hiHatCBool[i] === false) { hiHatCBool[i] = true; $(event.target).addClass('litSteps') }
-            else { hiHatCBool[i] = false; $(event.target).removeClass('litSteps') }  
+            if (hiHatCBool[i] === false) { 
+                hiHatCBool[i] = true; $(event.target).addClass('litSteps');
+                hiHatC.play();
+            }
+            else { 
+                hiHatCBool[i] = false; $(event.target).removeClass('litSteps');
+                stepRemoveFx.play();
+            }  
         }
     }
     for (var i=0; i<=63; i++) {
         if (event.target.id === '#hiHatOp' + i) {
-            if (hiHatOpBool[i] === false) { hiHatOpBool[i] = true; $(event.target).addClass('litSteps') }
-            else { hiHatOpBool[i] = false; $(event.target).removeClass('litSteps') }  
+            if (hiHatOpBool[i] === false) { 
+                hiHatOpBool[i] = true; $(event.target).addClass('litSteps');
+                hiHatOp.play({volume: .75});
+            }
+            else { 
+                hiHatOpBool[i] = false; $(event.target).removeClass('litSteps');
+                stepRemoveFx.play();
+            }  
         }
     }
 })
@@ -219,8 +243,6 @@ function toggleInstructions() {
     }
 }
 
-
-
 //// pulse color animation while computer is speaking
 //// VISUALIZER tutorial 
 //// https://airtightinteractive.com/demos/js/reactive/
@@ -228,27 +250,6 @@ function toggleInstructions() {
 //    $('#container').css({backgroundColor:'blue'});
 ////    $('#container').animate({backgroundColor:'#943D20'}, 100);
 //});
-
-//// not sure what this is
-//$( "li" ).hover(
-//  function() {
-//    $( this ).append( $( "<span> ***</span>" ) );
-//  }, function() {
-//    $( this ).find( "span:last" ).remove();
-//  }
-//);
-
-//// call all loops on WORKING
-//// kind of annoying to hear it twice through each time...
-//// going back to single loop technology for better UX
-//// stop loops immediately: NOT working
-//function startLoops() {
-//    kitLoop();
-//    setTimeout(function() { 
-//      console.log('setTimeout entered in startLoops')
-//      kitLoop();
-//    }, loopMs)
-//}
 
 //// connect 'click' to #playComputerLoop WORKING
 //// call computer's beat WORKING
@@ -283,8 +284,10 @@ if (!victory) {
         if (userLoopClickable) {
             computerLoopClickable = false;
             instructionsClickable = false;
-        if (e.target.innerHTML === "play_your_wanna_beat") { 
+        if (e.target.innerHTML === "play_your_wanna_beat" || "acc3ptable sauce") {
             e.target.innerHTML = "that_sauce_is_w3ak";
+//            if (victory) { 
+//                e.target.innerHTML = "acc3ptable_sauce"}
             pauser = false;
             kitLoop(); 
 //             looper = true; //// unnecessary?
@@ -311,7 +314,7 @@ function winCheck() {
             if (!hiHatCBool[0] && !hiHatCBool[1] && hiHatCBool[2] && !hiHatCBool[3] && !hiHatCBool[4] && !hiHatCBool[5] && !hiHatCBool[6] && !hiHatCBool[7] && !hiHatCBool[8] && !hiHatCBool[9] && !hiHatCBool[10] && !hiHatCBool[11] && !hiHatCBool[12] && !hiHatCBool[13] && !hiHatCBool[14] && !hiHatCBool[15] && !hiHatCBool[16] && !hiHatCBool[17] && hiHatCBool[18] && !hiHatCBool[19] && !hiHatCBool[20] && !hiHatCBool[21] && !hiHatCBool[22] && !hiHatCBool[23] && !hiHatCBool[24] && !hiHatCBool[25] && !hiHatCBool[26] && !hiHatCBool[27] && !hiHatCBool[28] && !hiHatCBool[29] && !hiHatCBool[30] && !hiHatCBool[31] && !hiHatCBool[32] && !hiHatCBool[33] && hiHatCBool[34] && !hiHatCBool[35] && !hiHatCBool[36] && !hiHatCBool[37] && !hiHatCBool[38] && !hiHatCBool[39] && !hiHatCBool[40] && !hiHatCBool[41] && !hiHatCBool[41] && !hiHatCBool[43] && !hiHatCBool[44] && !hiHatCBool[45] && !hiHatCBool[46] && !hiHatCBool[47] && !hiHatCBool[48] && !hiHatCBool[49] && hiHatCBool[50] && !hiHatCBool[51] && !hiHatCBool[52] && !hiHatCBool[53] && !hiHatCBool[54] && !hiHatCBool[55] && !hiHatCBool[56] && !hiHatCBool[57] && !hiHatCBool[58] && !hiHatCBool[59] && hiHatCBool[60] && !hiHatCBool[61] && !hiHatCBool[62] && !hiHatCBool[63]) {
                 if (!hiHatOpBool[0] && !hiHatOpBool[1] && !hiHatOpBool[2] && !hiHatOpBool[3] && !hiHatOpBool[4] && !hiHatOpBool[5] && !hiHatOpBool[6] && !hiHatOpBool[7] && !hiHatOpBool[8] && !hiHatOpBool[9] && !hiHatOpBool[10] && !hiHatOpBool[11] && hiHatOpBool[12] && !hiHatOpBool[13] && !hiHatOpBool[14] && !hiHatOpBool[15] && !hiHatOpBool[16] && !hiHatOpBool[17] && !hiHatOpBool[18] && !hiHatOpBool[19] && !hiHatOpBool[20] && !hiHatOpBool[21] && !hiHatOpBool[22] && !hiHatOpBool[23] && !hiHatOpBool[24] && !hiHatOpBool[25] && !hiHatOpBool[26] && !hiHatOpBool[27] && !hiHatOpBool[28] && !hiHatOpBool[29] && !hiHatOpBool[30] && !hiHatOpBool[31] && !hiHatOpBool[32] && !hiHatOpBool[33] && !hiHatOpBool[34] && !hiHatOpBool[35] && !hiHatOpBool[36] && !hiHatOpBool[37] && !hiHatOpBool[38] && !hiHatOpBool[39] && !hiHatOpBool[40] && !hiHatOpBool[41] && !hiHatOpBool[41] && !hiHatOpBool[43] && hiHatOpBool[44] && !hiHatOpBool[45] && !hiHatOpBool[46] && !hiHatOpBool[47] && !hiHatOpBool[48] && !hiHatOpBool[49] && !hiHatOpBool[50] && !hiHatOpBool[51] && !hiHatOpBool[52] && !hiHatOpBool[53] && !hiHatOpBool[54] && !hiHatOpBool[55] && !hiHatOpBool[56] && !hiHatOpBool[57] && !hiHatOpBool[58] && !hiHatOpBool[59] && !hiHatOpBool[60] && !hiHatOpBool[61] && !hiHatOpBool[62] && !hiHatOpBool[63]) {
                     console.log('User victoryyyyyy!!!');
-//                    $('#toggleUserLoop').text("play_your_objectvely_superior_beat"); //// very icebox-y
+                    $('#toggleUserLoop').text("acceptable_sauce"); //// very icebox-y
                     victory = true;
                     computerDefeat.play();
                 };
