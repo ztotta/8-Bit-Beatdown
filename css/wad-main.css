@@ -1,8 +1,34 @@
 /* d  */
   
+/*
+html { 
+  background: url("../assets/8BitBackground2.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+*/
+
 body{ 
-/*    margin: auto;*/
-    background-color: antiquewhite;
+/*    margin: 0 auto;*/
+/*    width: 95%;*/
+/*    height: 95%;*/
+    background-color: #fdf7ef;
+/*
+    background: url("assets/8BitBackground.jpg") no-repeat center center fixed; ;
+    background-repeat: no-repeat;
+*/
+}
+
+#container {
+    height: auto;
+    width: 1000px;
+    margin: 0 auto;
+/*    background-color: #fdf7ef; */
+    background-color: #697368;
+    border: 10px solid #697368;
+    padding: 10px
 }
 
 h1, h2 {
@@ -17,14 +43,22 @@ h1, h2 {
 
 h1 {
     font-size: 66px;
-    width: 1000px;
+    width: auto;
+    margin: 0px auto 0px auto;
+    background-color: #cbffed;
 }
 
 h2 {
     font-size: 48px;
     padding: 10px;
-    width: 980px;
+    width: auto;
+    margin: 10px auto;
+    background-color: #cbffed;
 /*    text-align: center;*/
+}
+
+#instructions {
+    background-color: antiquewhite;
 }
 
 #instructions:hover {
@@ -66,8 +100,8 @@ h2 {
     justify-content: center;
     align-items: center;
     align-content: space-between;
-    height: 1000px;
-    width: 1000px;
+    height: 700px;
+    width: auto;
     background-color: #cbffed;
     border: 10px solid #61b1ff;
     font-family: 'VT323', monospace;
@@ -82,11 +116,12 @@ h2 {
     align-items: center;
     align-content: center;
     height: 22%;
-    width: 95%;
-    margin: auto;
+    width: 98%;
+    margin: 10px auto 0 auto;
     background-color: #61b1ff;
-    border: 10px solid #fdf7ef;
+/*    border: 10px solid black;*/
     padding: 0px;
+    
 }
 
 .kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps {
@@ -128,3 +163,24 @@ h2 {
 .metronome {
     background-color: coral;
 }
+
+/* BACKGROUND IMG text
+_____$_____$_____$_____$_____$_____$_____$_____$
+____#_____#_____#_____#_____#_____#_____#_____#_
+___%_____%_____%_____%_____%_____%_____%_____%__
+__*_____*_____*_____*_____*_____*_____*_____*___
+_@_____@_____@_____@_____@_____@_____@_____@____
+$_____$_____$_____$_____$_____$_____$_____$_____$
+_____$_____$_____$_____$_____$_____$_____$_____$
+____#_____#_____#_____#_____#_____#_____#_____#_
+___%_____%_____%_____%_____%_____%_____%_____%__
+__*_____*_____*_____*_____*_____*_____*_____*___
+_@_____@_____@_____@_____@_____@_____@_____@____
+$_____$_____$_____$_____$_____$_____$_____$_____$
+_____$_____$_____$_____$_____$_____$_____$_____$
+____#_____#_____#_____#_____#_____#_____#_____#_
+___%_____%_____%_____%_____%_____%_____%_____%__
+__*_____*_____*_____*_____*_____*_____*_____*___
+_@_____@_____@_____@_____@_____@_____@_____@____
+$_____$_____$_____$_____$_____$_____$_____$_____$
+*/
