@@ -233,6 +233,7 @@ $($instructions).click(function() {
         visualizerAudioSrc = 'assets/computerInstructions.mp3';
         updateAudioSrc();
         audio.play();
+        flashOrBar();
         setTimeout(function() { 
             console.log('setTimeout entered in toggle pause')
             instructions = true; 
@@ -265,6 +266,39 @@ function toggleInstructions() {
     }
 }
 
+//// make instructions flash until clicked WORKING
+clickCounter = 0;
+if (clickCounter < 1) { 
+    clkIntInstructions = setInterval(function() {
+        $instructions.toggleClass('instructionsFlash');
+    }, 500);
+}
+$instructions.click(function() {
+    console.log("should turn off from here!");
+    clickCounter++;
+    clearInterval(clkIntInstructions);
+});
+
+//// make " ||||| " flash when computerLoop and Instruction play
+var $pipeBar = $('#orBar');
+function flashOrBar() {
+    clkIntOrBar = setInterval(function() {
+        $pipeBar.toggleClass('orBarFlash');
+        console.log('or bar interval entered')
+    }, 500);   
+    $pipeBar.click(function() {
+        console.log("OR Bar clicked!");
+        clearInterval(clkIntOrBar);
+        visualizerAudioSrc = 'assets/emptyAudio.mp3';
+        updateAudioSrc();
+        audio.play();
+    });
+}
+
+
+
+
+
 //// pulse color animation while computer is speaking
 //// VISUALIZER tutorial 
 //// https://airtightinteractive.com/demos/js/reactive/
@@ -287,6 +321,7 @@ $('#startComputerLoop').click(function(e) {
         visualizerAudioSrc = 'assets/computerLoopEasy.mp3';
         updateAudioSrc();
         audio.play();
+        flashOrBar();
         setTimeout(function() { 
             console.log('setTimeout entered in toggle pause');
             e.target.innerHTML = "play_my_wick3d_beat";

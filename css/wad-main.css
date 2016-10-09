@@ -63,7 +63,19 @@ h2 {
     background-color: antiquewhite;
 }
 
+.instructionsFlash {
+    color: lightslategray;
+}
+
 #instructions:hover {
+    color: lightslategray;
+}
+
+#orBar {
+    background-color: #cbffed;
+}
+
+.orBarFlash {
     color: lightslategray;
 }
 
