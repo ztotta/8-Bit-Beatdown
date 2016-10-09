@@ -94,10 +94,10 @@ $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) 
         if (event.target.id === '#kick' + i) {
             if (kickBool[i] === false) { 
                 kickBool[i] = true; $(event.target).addClass('litSteps'); 
-//                kick.play();
-                visualizerAudioSrc = 'assets/kickEdit.mp3';
-                updateAudioSrc(); 
-                audio.play();
+                kick.play();
+//                visualizerAudioSrc = 'assets/kickEdit.mp3';
+//                updateAudioSrc(); 
+//                audio.play();
             }
             else { 
                 kickBool[i] = false; $(event.target).removeClass('litSteps');
@@ -111,8 +111,8 @@ $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) 
                 snareBool[i] = true; $(event.target).addClass('litSteps');
                 snare.play({volume: 6.5});
 //                visualizerAudioSrc = snare; RECORD
-                visualizerAudioSrc = 'assets/snare.wav'
-                updateAudioSrc();
+//                visualizerAudioSrc = 'assets/snare.wav'
+//                updateAudioSrc();
             }
             else { 
                 snareBool[i] = false; $(event.target).removeClass('litSteps');
@@ -186,32 +186,38 @@ function kitLoop() {
     snareLoop();
     hiHatCLoop();
     hiHatOpLoop();
-//    metronome();
+    metronome();
 }
 
-//// make divs light up with metronome NOT working
-//// it makes it through, but affects all 64 divs at same time
+//// make divs light up with metronome WORKING
+//// could possibly loop through array of step classes?
 function metronome() {
-//    var beatCounter = 0;
-//    var $kickSteps = $('.kickSteps');
-//    function doSetTimeout(i) {
-//        setTimeout(function() {
-//            $($kickSteps[i]).addClass('metronome');
-//        }, 2000);
-//    }
-//    for (var i=0; i<=63; i++) { doSetTimeout(i) };
-    
-    // make quarter notes toggle class on beat
-    var metronomeMs = beat * 250;
-    for (var i=0; i<=63; i++){
-        setInterval(function(metInt) {
-            console.log('quarterNote setTimeout entered')
-//          debugger;
-            var $quarterMetronome = $('.quarterNote').eq(i);
-            $quarterMetronome.addClass('metronome');
-        }, metronomeMs);
-        metronomeMs += 2000; 
-    }
+    $('.kickSteps').eq(0).addClass('metronome');
+    $('.snareSteps').eq(0).addClass('metronome');
+    $('.hiHatCSteps').eq(0).addClass('metronome');
+    $('.hiHatOpSteps').eq(0).addClass('metronome');
+    var stepCount = 4;
+    setInterval(function() {  
+        for (var i=stepCount; i<stepCount+1; i++) {
+            $('.kickSteps').eq(i).addClass('metronome');
+            $('.kickSteps').eq(i-4).removeClass('metronome');
+//            $('.kickSteps').eq(i-4).fadeOut("slow", function() {
+//                $(this).removeClass('metronome') })
+        }
+        for (var i=stepCount; i<stepCount+1; i++) {
+            $('.snareSteps').eq(i).addClass('metronome');
+            $('.snareSteps').eq(i-4).removeClass('metronome')
+        }
+        for (var i=stepCount; i<stepCount+1; i++) {
+            $('.hiHatCSteps').eq(i).addClass('metronome');
+            $('.hiHatCSteps').eq(i-4).removeClass('metronome')
+        }
+        for (var i=stepCount; i<stepCount+1; i++) {
+            $('.hiHatOpSteps').eq(i).addClass('metronome');
+            $('.hiHatOpSteps').eq(i-4).removeClass('metronome')
+        }
+        stepCount += 4;
+    }, beat * 250);
 }
 
 //// deliver instructions on click WORKING
@@ -293,7 +299,6 @@ $('#startComputerLoop').click(function(e) {
 })
 
 //// toggle "play/pause" text WORKING
-//// loop toggle NOT working...buggy...almost...
 var victory = false;
 var pauser = false;
 var userLoopClickable = true;
@@ -303,22 +308,22 @@ if (!victory) {
         if (userLoopClickable) {
             computerLoopClickable = false;
             instructionsClickable = false;
+            userLoopClickable = false;
         if (e.target.innerHTML === "play_your_wanna_beat" || "acc3ptable sauce") {
             e.target.innerHTML = "that_sauce_is_w3ak";
 //            if (victory) { 
 //                e.target.innerHTML = "acc3ptable_sauce"}
-            pauser = false;
+//            pauser = false;
             kitLoop(); 
-//             looper = true; //// unnecessary?
             setTimeout(function() { 
                 console.log('setTimeout entered in toggle pause')
                 e.target.innerHTML = "play_your_wanna_beat";
                 userLoopClickable = true;
                 computerLoopClickable = true;
                 instructionsClickable = true;
+                userLoopClickable = true;
             }, loopMs)
         } 
-        userLoopClickable = true;
         }
 })}
 
@@ -366,7 +371,7 @@ function initMp3Player(){
     audio.src = visualizerAudioSrc;
 //	document.getElementById('audio_box').removeChild(audio);
     document.getElementById('audio_box').appendChild(audio);
-	context = new webkitAudioContext(); // AudioContext object instance
+	context = new AudioContext(); // AudioContext object instance
 	analyser = context.createAnalyser(); // AnalyserNode method
 	canvas = document.getElementById('analyser_render');
 	ctx = canvas.getContext('2d');
@@ -386,7 +391,7 @@ function updateAudioSrc() {
 // frameLooper() animates any style of graphics you wish to the audio frequency
 // Looping at the default frame rate that the browser provides(approx. 60 FPS)
 function frameLooper(){
-	window.webkitRequestAnimationFrame(frameLooper);
+	window.requestAnimationFrame(frameLooper);
 	fbc_array = new Uint8Array(analyser.frequencyBinCount);
 	analyser.getByteFrequencyData(fbc_array);
 	ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
@@ -394,7 +399,7 @@ function frameLooper(){
 	bars = 100;
 	for (var i = 0; i < bars; i++) {
 		bar_x = i * 3;
-		bar_width = 4;
+		bar_width = 3;
 		bar_height = -(fbc_array[i] / 2);
 		//  fillRect( x, y, width, height ) // Explanation of the parameters below
 		ctx.fillRect(bar_x, canvas.height, bar_width, bar_height);
@@ -405,6 +410,8 @@ function frameLooper(){
 //// EXPERIMENTING:
 $8BitBeatdown = $('#8BitBeatdown')
 $8BitBeatdown.click(function(e) {
+    visualizerAudioSrc = "assets/kickEdit.mp3"
+    updateAudioSrc();
     audio.play();
     }
 )
