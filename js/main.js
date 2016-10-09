@@ -9,13 +9,10 @@
 //// 
 
 console.log("main js loaded")
-//
 var bpm = 95; 
 var beat = 160 / bpm;
 var loopMs = beat * 1000 * 4;
 var looper = true;
-var victory = false;
-var instructions = false;
 
 //// create instruments for each sound. WORKING
 var kick = new Wad({source: 'assets/kickEdit.mp3'});
@@ -35,8 +32,6 @@ var computerDefeat = new Wad({
     source : 'assets/computerDefeat.mp3',
     env : { attack : 0, decay : 100000, sustain : 1, hold : 1, release : 1 }})
     computerInstructions.setVolume(2.2)
-////var computerMocking = new Wad {}
-
 
 //// create 64 booleans for each instrument. WORKING
 var kickBool = [];
@@ -68,7 +63,7 @@ function stepIdMaker () {
 }
 stepIdMaker();
 
-//// assign unique class to quarter notes to clarify the grid
+//// assign unique class to quarter notes to clarify the grid WORKING
 function quarterNoteMaker () {
     for (var i=0; i<= 63; i+=4) {
         $('.kickSteps').eq(i).addClass('quarterNote');
@@ -182,28 +177,27 @@ function metronome() {
     }
 }
 
-//// deliver instructions on click WORKING
-//// toggle "Instructions" & "Print" not WORKING
+//// deliver instructions on click and prevent from doubling WORKING
+//// toggle "Instructions" & "Print" WORKING
 var $instructions = $('#instructions')
 var instructionsClickable = true;
+var instructions = false;
 
-
-    $($instructions).click(function() {
-        if (instructionsClickable) { 
-            computerInstructions.play(); 
-        }; 
-        instructionsClickable = false;
-        $($instructions).text(`PRINT("this_machine's_got_rhythm")`);
+$($instructions).click(function() {
+    if (instructionsClickable) { 
+        computerInstructions.play(); 
         setTimeout(function() { 
             console.log('setTimeout entered in toggle pause')
             instructions = true; 
             toggleInstructions();
             instructionsClickable = true;
-        }, 49000)
-    });
-
-
-if (!instructionsClickable) { }
+        }, 49000);
+    }; 
+    console.log('instructions/print clicked');
+    instructions = false;
+    instructionsClickable = false;
+    $($instructions).text(`PRINT("this_machine's_got_rhythm")`);
+});
 
 function toggleInstructions() {
     if (instructions) {
@@ -215,6 +209,8 @@ function toggleInstructions() {
         });
     }
 }
+
+
 
 //// pulse color animation while computer is speaking
 //// VISUALIZER tutorial 
@@ -243,14 +239,16 @@ $('#startComputerLoop').click(function() {
 })
 
 //// call all loops on WORKING
+//// kind of annoying to hear it twice through each time...
+//// going back to single loop technology for better UX
 //// stop loops immediately: NOT working
-function startLoops() {
-    kitLoop();
-    setTimeout(function() { 
-      console.log('setTimeout entered in startLoops')
-      kitLoop();
-    }, loopMs)
-}
+//function startLoops() {
+//    kitLoop();
+//    setTimeout(function() { 
+//      console.log('setTimeout entered in startLoops')
+//      kitLoop();
+//    }, loopMs)
+//}
     //// setInteral relaunches at intervals of 1 loop WORKING
     //// doesn't stop immediately...
     //// stop loop with looper = false, BUT
@@ -264,6 +262,7 @@ function startLoops() {
 
 //// toggle "play/pause" text WORKING
 //// loop toggle NOT working...buggy...almost...
+var victory = false;
 if (!victory) {
     $('#toggleUserLoop').click(function(e) {
         if (e.target.innerHTML === "play_your_wanna_beat") { 
