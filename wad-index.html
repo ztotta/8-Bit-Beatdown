@@ -9,7 +9,7 @@
 <body>
    
     <div id="container">
-        <h1>$_____8_Bit_Beatdown_____$</h1>
+        <h1 id="8BitBeatdown">$_____8_Bit_Beatdown_____$</h1>
         <h2 id="instructions">#_____Instructions_____#</h2>
         <h2>
             <span id="startComputerLoop">play_my_wick3d_beat</span>|||||<span id="toggleUserLoop">play_your_wanna_beat</span>
@@ -281,8 +281,12 @@
         </div>
     </div>
     </div>
-    
+    <div id="mp3_player">
+      <div id="audio_box"></div>
+      <canvas id="analyser_render"></canvas>
+    </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" ></script>
+    <script src="js/visualizer.js"></script> 
     <script src="js/wadz.min.js"></script> 
     <script src="js/main.js"></script>
 </body>

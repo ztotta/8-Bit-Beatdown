@@ -16,11 +16,11 @@ var looper = true;
 
 //// create instruments for each sound. WORKING
 var kick = new Wad({source: 'assets/kickEdit.mp3'});
-var snare = new Wad(Wad.presets.snare); 
+var snare = new Wad(Wad.presets.snare);
+    snare.setVolume(9);
 var hiHatC = new Wad(Wad.presets.hiHatClosed);
 var hiHatOp = new Wad(Wad.presets.hiHatOpen);
 var stepRemoveFx = new Wad({source: 'assets/stepRemoveFx.mp3', volume: .4});
-//var computerLoopEasy = new Wad({source: 'assets/computerLoopEasy.mp3'});
 var computerLoopEasy = new Wad({
     source : 'assets/computerLoopEasy.mp3',
     env : { attack : 0, decay : 10000, sustain : 1, hold : 1, release : 1 }})
@@ -123,7 +123,7 @@ $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) 
         if (event.target.id === '#hiHatOp' + i) {
             if (hiHatOpBool[i] === false) { 
                 hiHatOpBool[i] = true; $(event.target).addClass('litSteps');
-                hiHatOp.play({volume: .75});
+                hiHatOp.play({volume: .5});
             }
             else { 
                 hiHatOpBool[i] = false; $(event.target).removeClass('litSteps');
