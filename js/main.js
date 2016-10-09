@@ -201,7 +201,7 @@ $($instructions).click(function() {
 
 function toggleInstructions() {
     if (instructions) {
-        console.log('instructions if entered')
+        console.log('instructions "if" entered')
         $instructions.hover(function() {
             $($instructions).text('#_____Instructions_____#')
         }, function() {
@@ -229,15 +229,6 @@ function toggleInstructions() {
 //  }
 //);
 
-
-//// call computer's beat WORKING
-//// connect 'click' to #playComputerLoop WORKING
-//// make computer taunt after user hears it's beat NOT yet
-$('#startComputerLoop').click(function() { 
-    computerLoopEasy.play(); 
-    console.log('play dammit!');
-})
-
 //// call all loops on WORKING
 //// kind of annoying to hear it twice through each time...
 //// going back to single loop technology for better UX
@@ -249,42 +240,54 @@ $('#startComputerLoop').click(function() {
 //      kitLoop();
 //    }, loopMs)
 //}
-    //// setInteral relaunches at intervals of 1 loop WORKING
-    //// doesn't stop immediately...
-    //// stop loop with looper = false, BUT
-    //// start with startLoops() so it starts at the bottom
-    //// and doesn't keep the old loop
-//    setInterval(function(loopInt) {
-//      if (!looper) { clearInterval(loopInt); return } 
-//      console.log('setIntervalz entered after if')
-//      kitLoop();
-//    }, loopMs)
+
+//// connect 'click' to #playComputerLoop WORKING
+//// call computer's beat WORKING
+//// prevent beat from doubling WORKING
+//// toggle "play_my_wicked_beat" text WORKING
+var computerLoopClickable = true;
+$('#startComputerLoop').click(function(e) {
+    if (computerLoopClickable) {
+        userLoopClickable = false;
+        e.target.innerHTML = "now_that's_d3rang3d";
+        computerLoopEasy.play(); 
+        setTimeout(function() { 
+            console.log('setTimeout entered in toggle pause');
+            e.target.innerHTML = "play_my_wick3d_beat";
+            computerLoopClickable = true;
+            userLoopClickable = true;
+        }, loopMs)
+    };
+    computerLoopClickable = false;
+})
 
 //// toggle "play/pause" text WORKING
 //// loop toggle NOT working...buggy...almost...
 var victory = false;
+var pauser = false;
+var userLoopClickable = true;
 if (!victory) {
+//    loopClickable = true;
     $('#toggleUserLoop').click(function(e) {
+        if (userLoopClickable) {
+            computerLoopClickable = false;
         if (e.target.innerHTML === "play_your_wanna_beat") { 
-            e.target.innerHTML = "pause_your_wanna_beat";
-            startLoops(); looper = true;
+            e.target.innerHTML = "that_sauce_is_w3ak";
+            pauser = false;
+            kitLoop(); 
+//             looper = true; //// unnecessary?
             setTimeout(function() { 
                 console.log('setTimeout entered in toggle pause')
-                e.target.innerHTML = "play_your_wanna_beat"
-            }, loopMs * 2)
+                e.target.innerHTML = "play_your_wanna_beat";
+                userLoopClickable = true;
+                computerLoopClickable = true;
+            }, loopMs)
+        } 
+        userLoopClickable = true;
         }
-        else { e.target.innerHTML = "play_your_wanna_beat"; 
-        looper = false }  
 })}
 
-//// toggle "play_my_wicked_beat" text WORKING
-$('#startComputerLoop').click(function(e) {
-    e.target.innerHTML = "now_that's_d3rang3d";
-    setTimeout(function() { 
-        console.log('setTimeout entered in toggle pause')
-        e.target.innerHTML = "play_my_wick3d_beat"
-    }, loopMs)
-})
+
 
 //// WORKING ////
 //// check for victory on every div click (all step var's match the key's bool values) 
