@@ -177,7 +177,8 @@ function metronome() {
     }
 }
 
-//// deliver instructions on click and prevent from doubling WORKING
+//// deliver instructions on click WORKING
+//// prevent from doubling WORKING
 //// toggle "Instructions" & "Print" WORKING
 var $instructions = $('#instructions')
 var instructionsClickable = true;
@@ -189,24 +190,32 @@ $($instructions).click(function() {
         setTimeout(function() { 
             console.log('setTimeout entered in toggle pause')
             instructions = true; 
-            toggleInstructions();
             instructionsClickable = true;
+            computerLoopClickable = true;
+            userLoopClickable = true;
+            toggleInstructions();
         }, 49000);
+        computerLoopClickable = false;
+        userLoopClickable = false;
     }; 
     console.log('instructions/print clicked');
     instructions = false;
     instructionsClickable = false;
-    $($instructions).text(`PRINT("this_machine's_got_rhythm")`);
+    if (userLoopClickable && computerLoopClickable) {
+        $($instructions).text(`PRINT("this_machine's_got_rhythm")`);
+    };
 });
 
 function toggleInstructions() {
     if (instructions) {
         console.log('instructions "if" entered')
-        $instructions.hover(function() {
-            $($instructions).text('#_____Instructions_____#')
-        }, function() {
-            $($instructions).text(`PRINT("this_machine's_got_rhythm")`)
-        });
+        if (userLoopClickable || computerLoopClickable) {
+            $instructions.hover(function() {
+                $($instructions).text('#_____Instructions_____#')
+            }, function() {
+                $($instructions).text(`PRINT("this_machine's_got_rhythm")`)
+            });
+        }
     }
 }
 
@@ -249,6 +258,7 @@ var computerLoopClickable = true;
 $('#startComputerLoop').click(function(e) {
     if (computerLoopClickable) {
         userLoopClickable = false;
+        instructionsClickable = false;
         e.target.innerHTML = "now_that's_d3rang3d";
         computerLoopEasy.play(); 
         setTimeout(function() { 
@@ -256,6 +266,7 @@ $('#startComputerLoop').click(function(e) {
             e.target.innerHTML = "play_my_wick3d_beat";
             computerLoopClickable = true;
             userLoopClickable = true;
+            instructionsClickable = true;
         }, loopMs)
     };
     computerLoopClickable = false;
@@ -271,6 +282,7 @@ if (!victory) {
     $('#toggleUserLoop').click(function(e) {
         if (userLoopClickable) {
             computerLoopClickable = false;
+            instructionsClickable = false;
         if (e.target.innerHTML === "play_your_wanna_beat") { 
             e.target.innerHTML = "that_sauce_is_w3ak";
             pauser = false;
@@ -281,6 +293,7 @@ if (!victory) {
                 e.target.innerHTML = "play_your_wanna_beat";
                 userLoopClickable = true;
                 computerLoopClickable = true;
+                instructionsClickable = true;
             }, loopMs)
         } 
         userLoopClickable = true;
