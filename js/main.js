@@ -13,6 +13,13 @@ var bpm = 95;
 var beat = 160 / bpm;
 var loopMs = beat * 1000 * 4;
 var looper = true;
+var audio = new Audio();
+var fakeAudio = new Audio();
+audio.controls = false;
+audio.loop = false;
+audio.autoplay = false;
+var visualizerAudioSrc = "assets/kickEdit.mp3";
+audio.src = visualizerAudioSrc;
 
 //// create instruments for each sound. WORKING
 var kick = new Wad({source: 'assets/kickEdit.mp3'});
@@ -87,7 +94,10 @@ $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) 
         if (event.target.id === '#kick' + i) {
             if (kickBool[i] === false) { 
                 kickBool[i] = true; $(event.target).addClass('litSteps'); 
-                kick.play();
+//                kick.play();
+                visualizerAudioSrc = 'assets/kickEdit.mp3';
+                updateAudioSrc(); 
+                audio.play();
             }
             else { 
                 kickBool[i] = false; $(event.target).removeClass('litSteps');
@@ -100,6 +110,9 @@ $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) 
             if (snareBool[i] === false) { 
                 snareBool[i] = true; $(event.target).addClass('litSteps');
                 snare.play({volume: 6.5});
+//                visualizerAudioSrc = snare; RECORD
+                visualizerAudioSrc = 'assets/snare.wav'
+                updateAudioSrc();
             }
             else { 
                 snareBool[i] = false; $(event.target).removeClass('litSteps');
@@ -210,7 +223,10 @@ var instructions = false;
 
 $($instructions).click(function() {
     if (instructionsClickable) { 
-        computerInstructions.play(); 
+//        computerInstructions.play(); 
+        visualizerAudioSrc = 'assets/computerInstructions.mp3';
+        updateAudioSrc();
+        audio.play();
         setTimeout(function() { 
             console.log('setTimeout entered in toggle pause')
             instructions = true; 
@@ -261,7 +277,10 @@ $('#startComputerLoop').click(function(e) {
         userLoopClickable = false;
         instructionsClickable = false;
         e.target.innerHTML = "now_that's_d3rang3d";
-        computerLoopEasy.play(); 
+//        computerLoopEasy.play(); 
+        visualizerAudioSrc = 'assets/computerLoopEasy.mp3';
+        updateAudioSrc();
+        audio.play();
         setTimeout(function() { 
             console.log('setTimeout entered in toggle pause');
             e.target.innerHTML = "play_my_wick3d_beat";
@@ -316,7 +335,10 @@ function winCheck() {
                     console.log('User victoryyyyyy!!!');
                     $('#toggleUserLoop').text("acceptable_sauce"); //// very icebox-y
                     victory = true;
-                    computerDefeat.play();
+//                    computerDefeat.play();
+                    visualizerAudioSrc = 'assets/computerDefeat.mp3';
+                    updateAudioSrc();
+                    audio.play();
                 };
             };
         };
@@ -329,3 +351,60 @@ function winCheck() {
 //// MEASURE 2: 16 17 18 19 | 20 21 22 23 | 24 25 26 27 | 28 29 30 31
 //// MEASURE 3: 32 33 34 35 | 36 37 38 39 | 40 41 42 43 | 44 45 46 47
 //// MEASURE 4: 48 49 50 51 | 52 53 54 55 | 56 57 58 59 | 60 61 62 63
+
+//// VISUALIZER:
+
+// Create a new instance of an audio object and adjust some of its properties
+////
+
+// Establish all variables that your Analyser will use
+var canvas, ctx, source, context, analyser, fbc_array, bars, bar_x, bar_width, bar_height;
+// Initialize the MP3 player after the page loads all of its HTML into the window
+window.addEventListener("load", initMp3Player, false); //REMOVING intiMp3Player
+document.getElementById('audio_box').appendChild(audio);
+function initMp3Player(){
+    audio.src = visualizerAudioSrc;
+//	document.getElementById('audio_box').removeChild(audio);
+    document.getElementById('audio_box').appendChild(audio);
+	context = new webkitAudioContext(); // AudioContext object instance
+	analyser = context.createAnalyser(); // AnalyserNode method
+	canvas = document.getElementById('analyser_render');
+	ctx = canvas.getContext('2d');
+	// Re-route audio playback into the processing graph of the AudioContext
+    source = context.createMediaElementSource(audio); 
+	source.connect(analyser);
+	analyser.connect(context.destination);
+	frameLooper();
+}
+
+// adding function to update audio src's
+function updateAudioSrc() {
+    audio.src = visualizerAudioSrc;
+    document.getElementById('audio_box').appendChild(audio);
+}
+
+// frameLooper() animates any style of graphics you wish to the audio frequency
+// Looping at the default frame rate that the browser provides(approx. 60 FPS)
+function frameLooper(){
+	window.webkitRequestAnimationFrame(frameLooper);
+	fbc_array = new Uint8Array(analyser.frequencyBinCount);
+	analyser.getByteFrequencyData(fbc_array);
+	ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+	ctx.fillStyle = '#697368'; // Color of the bars
+	bars = 100;
+	for (var i = 0; i < bars; i++) {
+		bar_x = i * 3;
+		bar_width = 4;
+		bar_height = -(fbc_array[i] / 2);
+		//  fillRect( x, y, width, height ) // Explanation of the parameters below
+		ctx.fillRect(bar_x, canvas.height, bar_width, bar_height);
+	}
+}
+
+// https://www.developphp.com/video/JavaScript/Analyser-Bars-Animation-HTML-Audio-API-Tutorial
+//// EXPERIMENTING:
+$8BitBeatdown = $('#8BitBeatdown')
+$8BitBeatdown.click(function(e) {
+    audio.play();
+    }
+)

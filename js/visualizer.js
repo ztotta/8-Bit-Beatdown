@@ -1,6 +1,10 @@
 // Create a new instance of an audio object and adjust some of its properties
+////
 var audio = new Audio();
-audio.src = 'assets/amber-original-stem.mp3';
+//var audioSourcer = function(e) {}
+//audio.src = 'assets/snare.wav'
+var visualizerAudioSrc = "assets/kickEdit.mp3";
+audio.src = visualizerAudioSrc;
 audio.controls = false;
 audio.loop = false;
 audio.autoplay = false;
@@ -41,6 +45,7 @@ function frameLooper(){
 // https://www.developphp.com/video/JavaScript/Analyser-Bars-Animation-HTML-Audio-API-Tutorial
 //// EXPERIMENTING:
 $8BitBeatdown = $('#8BitBeatdown')
-$8BitBeatdown.click(function() {
-  audio.play();
-})
+$8BitBeatdown.click(function(e) {
+    audio.play();
+    }
+)
