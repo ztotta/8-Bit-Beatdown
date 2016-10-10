@@ -26,7 +26,7 @@ var hiHatC = new Wad({source: 'assets/hiHatC.mp3'});
 var hiHatOp = new Wad({source: 'assets/hiHatOp.mp3'});
 var stepRemoveFx = new Wad({source: 'assets/stepRemoveFx.mp3', volume: .4});
 var haltFx = new Wad({source: 'assets/haltFx.mp3'});
-    haltFx.setVolume(.5)
+    haltFx.setVolume(0.5);
 var computerLoopEasy = new Wad({
     source : 'assets/computerLoopEasy.mp3',
     env : { attack : 0, decay : 10000, sustain : 1, hold : 1, release : 1 }})
@@ -155,16 +155,14 @@ function kickLoop() {
     flashOrBar();
     for (var i=0; i<=63; i++) {
         if (kickBool[i] && !computerLoopClickable && !instructionsClickable) { 
-            kick.play({wait : beat * beatCounter});
-//            setTimeout(function() {
-//                visualizerAudioSrc = 'assets/kickEdit.mp3';
-//                updateAudioSrc();
-//                console.log('kitLoop setTimeout1 entered')
-//            }, beat * beatCounter)
-//            setTimeout(function() {
-//                audio.play();
-//                console.log('kitLoop setTimeout2 entered')
-//            }, beat * beatCounter + 500)
+//            kick.play({wait : beat * beatCounter});
+            setTimeout(function() {
+                visualizerAudioSrc = 'assets/kickEdit.mp3';
+                updateAudioSrc();
+                audio.play();
+                console.log('kitLoop setTimeout1 entered')
+                console.timeEnd('kick')
+            }, beat * beatCounter * 1000)
         };
         beatCounter += 0.0625;
     }
@@ -183,10 +181,13 @@ function kickLoop() {
 function snareLoop() {
     var beatCounter = 0;
     for (var i=0; i<=63; i++) {
-        if (snareBool[i]) { snare.play({wait : beat * beatCounter}) 
-//        visualizerAudioSrc = 'assets/kickEdit.mp3';
-//        updateAudioSrc();
-//        audio.play();                  
+        if (snareBool[i]) { 
+//            snare.play({wait : beat * beatCounter}); 
+            setTimeout(function() {
+                visualizerAudioSrc = 'assets/snareNoise.mp3';
+                updateAudioSrc();
+                audio.play();
+            }, beat * beatCounter * 1000)                 
         }
 //        if (!looper) { return } // not stopping immediately
         beatCounter += 0.0625;
@@ -196,7 +197,14 @@ function snareLoop() {
 function hiHatCLoop() {
     var beatCounter = 0;
     for (var i=0; i<=63; i++) {
-        if (hiHatCBool[i]) { hiHatC.play({wait : beat * beatCounter}) }
+        if (hiHatCBool[i]) { 
+//            hiHatC.play({wait : beat * beatCounter}) 
+            setTimeout(function() {
+                visualizerAudioSrc = 'assets/hiHatC.mp3';
+                updateAudioSrc();
+                audio.play();
+            }, beat * beatCounter * 1000)
+        }
         beatCounter += 0.0625;
     }
 }
@@ -204,7 +212,14 @@ function hiHatCLoop() {
 function hiHatOpLoop() {
     var beatCounter = 0;
     for (var i=0; i<=63; i++) {
-        if (hiHatOpBool[i]) { hiHatOp.play({wait : beat * beatCounter}) }
+        if (hiHatOpBool[i]) { 
+//            hiHatOp.play({wait : beat * beatCounter}) 
+            setTimeout(function() {
+                visualizerAudioSrc = 'assets/hiHatOp.mp3';
+                updateAudioSrc();
+                audio.play();
+            }, beat * beatCounter * 1000)
+        }
         beatCounter += 0.0625;
     }
 }
@@ -319,7 +334,7 @@ function flashOrBar() {
         clearInterval(clkIntOrBar);
         visualizerAudioSrc = 'assets/emptyAudio.mp3';
         updateAudioSrc();
-        audio.play();
+//        audio.play(); 
         haltFx.play();
         userLoopClickable = true;
         computerLoopClickable = true;
@@ -367,6 +382,9 @@ if (!victory) {
             computerLoopClickable = false;
             instructionsClickable = false;
             userLoopClickable = false;
+//            visualizerAudioSrc = 'assets/kickEdit.mp3';
+//            updateAudioSrc();
+//            audio.play();
         if (e.target.innerHTML === "play_your_wanna_beat" || "acc3ptable sauce") {
             e.target.innerHTML = "that_sauce_is_w3ak";
 //            if (victory) { 

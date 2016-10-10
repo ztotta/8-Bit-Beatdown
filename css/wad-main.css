@@ -217,6 +217,16 @@ canvas {
     float: left; 
 }
 
+/*
+@media (max-width: 1050px) {
+    #container {
+        background-color: black;
+        width: 480px;
+    }
+    
+}
+*/
+
 /* BACKGROUND IMG text
 _____$_____$_____$_____$_____$_____$_____$_____$
 ____#_____#_____#_____#_____#_____#_____#_____#_
