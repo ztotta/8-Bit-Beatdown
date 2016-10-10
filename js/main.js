@@ -1,14 +1,11 @@
 //// new for project 10/5/16
-//// Mary Rose Cook livecoding
 //// CURRENT BUGS:
-//// too easy to retrigger and thus double all clips/loops;
-//// after restarting loop, it triggers a 2nd loop
-//// "play objectively etc." too big (ruins design flow);
-//// CSS is a mess...how to make it responsive and adjustable;
-//// metronome visualizer is non-functional but close
-//// 
+//// css gets swallowed when <~650px
+//// visualizer not receiving userLoop
+//// can't stop userLoop immediately
 
 console.log("main js loaded")
+
 var bpm = 95; 
 var beat = 160 / bpm;
 var loopMs = beat * 1000 * 4;
@@ -21,13 +18,15 @@ audio.autoplay = false;
 var visualizerAudioSrc = "assets/kickEdit.mp3";
 audio.src = visualizerAudioSrc;
 
-//// create instruments for each sound. WORKING
+//// create "instruments" for each sound. WORKING
 var kick = new Wad({source: 'assets/kickEdit.mp3'});
-var snare = new Wad(Wad.presets.snare);
-    snare.setVolume(9);
-var hiHatC = new Wad(Wad.presets.hiHatClosed);
-var hiHatOp = new Wad(Wad.presets.hiHatOpen);
+var snare = new Wad({source: 'assets/snareNoise.mp3'});
+    snare.setVolume(1);
+var hiHatC = new Wad({source: 'assets/hiHatC.mp3'});
+var hiHatOp = new Wad({source: 'assets/hiHatOp.mp3'});
 var stepRemoveFx = new Wad({source: 'assets/stepRemoveFx.mp3', volume: .4});
+var haltFx = new Wad({source: 'assets/haltFx.mp3'});
+    haltFx.setVolume(.5)
 var computerLoopEasy = new Wad({
     source : 'assets/computerLoopEasy.mp3',
     env : { attack : 0, decay : 10000, sustain : 1, hold : 1, release : 1 }})
@@ -70,7 +69,8 @@ function stepIdMaker () {
 }
 stepIdMaker();
 
-//// assign unique class to quarter notes to clarify the grid WORKING
+//// assign unique class to quarter notes to clarify the grid 
+//// WORKING
 function quarterNoteMaker () {
     for (var i=0; i<= 63; i+=4) {
         $('.kickSteps').eq(i).addClass('quarterNote');
@@ -87,8 +87,9 @@ function quarterNoteMaker () {
 }
 quarterNoteMaker();
 
-//// add click listener to steps and toggle boolean values WORKING
-//// make step light up when selected (toggle class) WORKING
+//// add click listener to steps and toggle boolean values 
+//// WORKING
+//// toggle step lighting up when selected/deselected WORKING
 $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) {
     for (var i=0; i<=63; i++) {
         if (event.target.id === '#kick' + i) {
@@ -109,7 +110,7 @@ $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) 
         if (event.target.id === '#snare' + i) {
             if (snareBool[i] === false) { 
                 snareBool[i] = true; $(event.target).addClass('litSteps');
-                snare.play({volume: 6.5});
+                snare.play();
 //                visualizerAudioSrc = snare; RECORD
 //                visualizerAudioSrc = 'assets/snare.wav'
 //                updateAudioSrc();
@@ -147,18 +148,46 @@ $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) 
 })
 
 //// build empty loops for each instrument WORKING
+//// bounce 
+//// set timeout for each updateAudioSrc
 function kickLoop() {
     var beatCounter = 0;
+    flashOrBar();
     for (var i=0; i<=63; i++) {
-        if (kickBool[i]) { kick.play({wait : beat * beatCounter}) }
+        if (kickBool[i] && !computerLoopClickable && !instructionsClickable) { 
+            kick.play({wait : beat * beatCounter});
+//            setTimeout(function() {
+//                visualizerAudioSrc = 'assets/kickEdit.mp3';
+//                updateAudioSrc();
+//                console.log('kitLoop setTimeout1 entered')
+//            }, beat * beatCounter)
+//            setTimeout(function() {
+//                audio.play();
+//                console.log('kitLoop setTimeout2 entered')
+//            }, beat * beatCounter + 500)
+        };
         beatCounter += 0.0625;
     }
+//    flashOrBar();
+        //// if orBar is clicked, reassign kick.play then 
+        //// assign is again? Just break the code and 
+        //// reassemble it again ?
+        //// UPDATE: can reassign it this way, but the loop 
+        //// still plays through as executed (need it above?)
+//    $('#orBar').click(function() {
+//    kick = new Wad({source: 'assets/haltFx.mp3'});        
+//    console.log('or bar clicked in kickLoop')
+//        }) 
 }
 
 function snareLoop() {
     var beatCounter = 0;
     for (var i=0; i<=63; i++) {
-        if (snareBool[i]) { snare.play({wait : beat * beatCounter}) }
+        if (snareBool[i]) { snare.play({wait : beat * beatCounter}) 
+//        visualizerAudioSrc = 'assets/kickEdit.mp3';
+//        updateAudioSrc();
+//        audio.play();                  
+        }
 //        if (!looper) { return } // not stopping immediately
         beatCounter += 0.0625;
     }
@@ -180,7 +209,7 @@ function hiHatOpLoop() {
     }
 }
 
-//// launch entire kit's loops
+//// launch entire kit's loops WORKING
 function kitLoop() {
     kickLoop();
     snareLoop();
@@ -190,7 +219,6 @@ function kitLoop() {
 }
 
 //// make divs light up with metronome WORKING
-//// could possibly loop through array of step classes?
 function metronome() {
     $('.kickSteps').eq(0).addClass('metronome');
     $('.snareSteps').eq(0).addClass('metronome');
@@ -201,8 +229,6 @@ function metronome() {
         for (var i=stepCount; i<stepCount+1; i++) {
             $('.kickSteps').eq(i).addClass('metronome');
             $('.kickSteps').eq(i-4).removeClass('metronome');
-//            $('.kickSteps').eq(i-4).fadeOut("slow", function() {
-//                $(this).removeClass('metronome') })
         }
         for (var i=stepCount; i<stepCount+1; i++) {
             $('.snareSteps').eq(i).addClass('metronome');
@@ -222,7 +248,7 @@ function metronome() {
 
 //// deliver instructions on click WORKING
 //// prevent from doubling WORKING
-//// toggle "Instructions" & "Print" WORKING
+//// toggle "Instructions" & "PRINT, etc" WORKING
 var $instructions = $('#instructions')
 var instructionsClickable = true;
 var instructions = false;
@@ -271,6 +297,7 @@ clickCounter = 0;
 if (clickCounter < 1) { 
     clkIntInstructions = setInterval(function() {
         $instructions.toggleClass('instructionsFlash');
+        console.log("instructions interval entered")
     }, 500);
 }
 $instructions.click(function() {
@@ -279,7 +306,8 @@ $instructions.click(function() {
     clearInterval(clkIntInstructions);
 });
 
-//// make " ||||| " flash when computerLoop and Instruction play
+//// make " ||||| " flash when computerLoop and Instructions 
+//// play WORKING
 var $pipeBar = $('#orBar');
 function flashOrBar() {
     clkIntOrBar = setInterval(function() {
@@ -292,20 +320,15 @@ function flashOrBar() {
         visualizerAudioSrc = 'assets/emptyAudio.mp3';
         updateAudioSrc();
         audio.play();
+        haltFx.play();
+        userLoopClickable = true;
+        computerLoopClickable = true;
+        instructionsClickable = true;
     });
+    setTimeout(function() {
+        clearInterval(clkIntOrBar);
+    }, 49000);
 }
-
-
-
-
-
-//// pulse color animation while computer is speaking
-//// VISUALIZER tutorial 
-//// https://airtightinteractive.com/demos/js/reactive/
-//$($instructions).click(function() {
-//    $('#container').css({backgroundColor:'blue'});
-////    $('#container').animate({backgroundColor:'#943D20'}, 100);
-//});
 
 //// connect 'click' to #playComputerLoop WORKING
 //// call computer's beat WORKING
@@ -317,7 +340,7 @@ $('#startComputerLoop').click(function(e) {
         userLoopClickable = false;
         instructionsClickable = false;
         e.target.innerHTML = "now_that's_d3rang3d";
-//        computerLoopEasy.play(); 
+////        computerLoopEasy.play(); 
         visualizerAudioSrc = 'assets/computerLoopEasy.mp3';
         updateAudioSrc();
         audio.play();
@@ -350,6 +373,7 @@ if (!victory) {
 //                e.target.innerHTML = "acc3ptable_sauce"}
 //            pauser = false;
             kitLoop(); 
+// insert audio readjustment here?
             setTimeout(function() { 
                 console.log('setTimeout entered in toggle pause')
                 e.target.innerHTML = "play_your_wanna_beat";
@@ -362,10 +386,8 @@ if (!victory) {
         }
 })}
 
-
-
-//// WORKING ////
-//// check for victory on every div click (all step var's match the key's bool values) 
+//// check for victory on every div click (all step var's 
+//// match the key's bool values) WORKING
 $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(winCheck);
 function winCheck() {
     if (kickBool[0] && !kickBool[1] && !kickBool[2] && !kickBool[3] && !kickBool[4] && !kickBool[5] && !kickBool[6] && !kickBool[7] && !kickBool[8] && !kickBool[9] && !kickBool[10] && !kickBool[11] && !kickBool[12] && !kickBool[13] && !kickBool[14] && !kickBool[15] && kickBool[16] && !kickBool[17] && !kickBool[18] && !kickBool[19] && !kickBool[20] && !kickBool[21] && !kickBool[22] && !kickBool[23] && !kickBool[24] && !kickBool[25] && !kickBool[26] && !kickBool[27] && !kickBool[28] && !kickBool[29] && !kickBool[30] && !kickBool[31] && kickBool[32] && !kickBool[33] && !kickBool[34] && !kickBool[35] && !kickBool[36] && !kickBool[37] && !kickBool[38] && !kickBool[39] && !kickBool[40] && !kickBool[41] &!kickBool[42] && !kickBool[43] && !kickBool[44] && !kickBool[45] && !kickBool[46] && !kickBool[47] && kickBool[48] && !kickBool[49] && !kickBool[50] && !kickBool[51] && !kickBool[52] && !kickBool[53] && !kickBool[54] && !kickBool[55] && !kickBool[56] && !kickBool[57] && !kickBool[58] && !kickBool[59] && !kickBool[60] && !kickBool[61] && !kickBool[62] && !kickBool[63]) {
@@ -386,21 +408,15 @@ function winCheck() {
     else { console.log('no win yet!') }
 }
 
-//// BEATS:
-//// MEASURE 1: 00 01 02 03 | 04 05 06 07 | 08 09 10 11 | 12 13 14 15
-//// MEASURE 2: 16 17 18 19 | 20 21 22 23 | 24 25 26 27 | 28 29 30 31
-//// MEASURE 3: 32 33 34 35 | 36 37 38 39 | 40 41 42 43 | 44 45 46 47
-//// MEASURE 4: 48 49 50 51 | 52 53 54 55 | 56 57 58 59 | 60 61 62 63
-
-//// VISUALIZER:
-
-// Create a new instance of an audio object and adjust some of its properties
-////
+//// visualizer: WORKING
+// Create a new instance of an audio object and adjust some of 
+// its properties (above---^)
 
 // Establish all variables that your Analyser will use
 var canvas, ctx, source, context, analyser, fbc_array, bars, bar_x, bar_width, bar_height;
-// Initialize the MP3 player after the page loads all of its HTML into the window
-window.addEventListener("load", initMp3Player, false); //REMOVING intiMp3Player
+// Initialize the MP3 player after the page loads all of its 
+// HTML into the window
+window.addEventListener("load", initMp3Player, false); 
 document.getElementById('audio_box').appendChild(audio);
 function initMp3Player(){
     audio.src = visualizerAudioSrc;
@@ -423,8 +439,10 @@ function updateAudioSrc() {
     document.getElementById('audio_box').appendChild(audio);
 }
 
-// frameLooper() animates any style of graphics you wish to the audio frequency
-// Looping at the default frame rate that the browser provides(approx. 60 FPS)
+// frameLooper() animates any style of graphics you wish to 
+// the audio frequency
+// Looping at the default frame rate that the browser 
+// provides(approx. 60 FPS)
 function frameLooper(){
 	window.requestAnimationFrame(frameLooper);
 	fbc_array = new Uint8Array(analyser.frequencyBinCount);
@@ -436,17 +454,23 @@ function frameLooper(){
 		bar_x = i * 3;
 		bar_width = 3;
 		bar_height = -(fbc_array[i] / 2);
-		//  fillRect( x, y, width, height ) // Explanation of the parameters below
+		//  fillRect( x, y, width, height ) // 
 		ctx.fillRect(bar_x, canvas.height, bar_width, bar_height);
 	}
 }
 
 // https://www.developphp.com/video/JavaScript/Analyser-Bars-Animation-HTML-Audio-API-Tutorial
 //// EXPERIMENTING:
-$8BitBeatdown = $('#8BitBeatdown')
-$8BitBeatdown.click(function(e) {
-    visualizerAudioSrc = "assets/kickEdit.mp3"
-    updateAudioSrc();
-    audio.play();
-    }
-)
+//$8BitBeatdown = $('#8BitBeatdown')
+//$8BitBeatdown.click(function(e) {
+//    visualizerAudioSrc = "assets/kickEdit.mp3"
+//    updateAudioSrc();
+//    audio.play();
+//    }
+//)
+
+//// BEATS:
+//// MEASURE 1: 00 01 02 03 | 04 05 06 07 | 08 09 10 11 | 12 13 14 15
+//// MEASURE 2: 16 17 18 19 | 20 21 22 23 | 24 25 26 27 | 28 29 30 31
+//// MEASURE 3: 32 33 34 35 | 36 37 38 39 | 40 41 42 43 | 44 45 46 47
+//// MEASURE 4: 48 49 50 51 | 52 53 54 55 | 56 57 58 59 | 60 61 62 63
