@@ -1,5 +1,4 @@
-console.log("main js loaded")
-
+//// #_____8_Bit_Beatdown_____# ////
 var bpm = 95; 
 var beat = 160 / bpm;
 var loopMs = beat * 1000 * 4;
@@ -12,7 +11,7 @@ audio.autoplay = false;
 var visualizerAudioSrc = 'assets/kickEdit.mp3';
 audio.src = visualizerAudioSrc;
 
-//// Create "instruments" for each sound. 
+//// Create "instruments" for each sound:
 var kick = new Wad({source: 'assets/kickEdit.mp3'});
 var snare = new Wad({source: 'assets/snareNoise.mp3'});
     snare.setVolume(1);
@@ -23,187 +22,101 @@ var haltFx = new Wad({source: 'assets/haltFx.mp3'});
     haltFx.setVolume(0.5);
 var computerLoopEasy = new Wad({
     source : 'assets/computerLoopEasy.mp3',
-    env : { attack : 0, decay : 10000, sustain : 1, hold : 1, release : 1 }})
+    env : { attack : 0, decay : 10000, sustain : 1, hold : 1, release : 1 }});
 var computerInstructions = new Wad({
     source : 'assets/computerInstructions.mp3',
-    env : { attack : 0, decay : 100000, sustain : 1, hold : 1, release : 1 }})
-    computerInstructions.setVolume(2.2)
+    env : { attack : 0, decay : 100000, sustain : 1, hold : 1, release : 1 }});
+    computerInstructions.setVolume(2.2);
 var computerDefeat = new Wad({
     source : 'assets/computerDefeat.mp3',
-    env : { attack : 0, decay : 100000, sustain : 1, hold : 1, release : 1 }})
-    computerInstructions.setVolume(2.2)
+    env : { attack : 0, decay : 100000, sustain : 1, hold : 1, release : 1 }});
+    computerDefeat.setVolume(2.2);
+    
 
-//// Create 64 booleans for each instrument.
-var kickBool = [];
-for (var i=0; i<64; i++) { kickBool.push(false) }
+//// Create 64 booleans for each instrument:
+function boolMaker(){
+  var bool = [];
+  for (var i=0; i<64; i++) { bool.push(false) }
+  return bool;
+}
+var kickBool = boolMaker();
+var snareBool = boolMaker();
+var hiHatCBool = boolMaker();
+var hiHatOpBool = boolMaker();
 
-var snareBool = [];
-for (var i=0; i<64; i++) { snareBool.push(false) }
-
-var hiHatCBool = [];
-for (var i=0; i<64; i++) { hiHatCBool.push(false)}
-
-var hiHatOpBool = [];
-for (var i=0; i<64; i++) { hiHatOpBool.push(false) }
 
 //// Assign id's to each step
-function stepIdMaker () {
+function stepIdMaker (className, id) {
     for (var i=0; i<= 63; i++) {
-        $('.kickSteps').eq(i).attr('id', '#kick' + i);
-    }
-    for (var i=0; i<= 63; i++) {
-        $('.snareSteps').eq(i).attr('id', '#snare' + i); 
-    }
-    for (var i=0; i<= 63; i++) {
-        $('.hiHatCSteps').eq(i).attr('id', '#hiHatC' + i);
-    }
-    for (var i=0; i<= 63; i++) {
-        $('.hiHatOpSteps').eq(i).attr('id', '#hiHatOp' + i);
+        $(className).eq(i).attr('id', id + i);
     }
 }
-stepIdMaker();
+stepIdMaker('.kickSteps', '#kick');
+stepIdMaker('.snareSteps', '#snare');
+stepIdMaker('.hiHatCSteps', '#hiHatC');
+stepIdMaker('.hiHatOpSteps', '#hiHatOp');
 
 //// Assign unique class to quarter notes to clarify the grid. 
-function quarterNoteMaker () {
+function quarterNoteMaker (className) {
     for (var i=0; i<= 63; i+=4) {
-        $('.kickSteps').eq(i).addClass('quarterNote');
-    }
-    for (var i=0; i<= 63; i+=4) {
-        $('.snareSteps').eq(i).addClass('quarterNote')
-    }
-    for (var i=0; i<= 63; i+=4) {
-        $('.hiHatCSteps').eq(i).addClass('quarterNote')
-    }
-    for (var i=0; i<= 63; i+=4) {
-        $('.hiHatOpSteps').eq(i).addClass('quarterNote')
+        $(className).eq(i).addClass('quarterNote');
     }
 }
-quarterNoteMaker();
+quarterNoteMaker('.kickSteps');
+quarterNoteMaker('.snareSteps');
+quarterNoteMaker('.hiHatCSteps');
+quarterNoteMaker('.hiHatOpSteps');
 
 //// Add click listener to steps and toggle boolean values. 
-//// Toggle step lighting up when selected/deselected. 
-$('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) {
+//// Toggle step lighting up when selected/deselected.
+function stepListenerMaker(bool, id, wad) {
     for (var i=0; i<=63; i++) {
-        if (event.target.id === '#kick' + i) {
-            if (kickBool[i] === false) { 
-                kickBool[i] = true; $(event.target).addClass('litSteps'); 
-                kick.play();
+        if (event.target.id === id + i) {
+            if (bool[i] === false) { 
+                bool[i] = true; $(event.target).addClass('litSteps'); 
+                wad.play(); /// could concatenate bool-'Bool'?
             }
             else { 
-                kickBool[i] = false; $(event.target).removeClass('litSteps');
+                bool[i] = false; $(event.target).removeClass('litSteps');
                 stepRemoveFx.play();
             } 
         }
     }
-    for (var i=0; i<=63; i++) {
-        if (event.target.id === '#snare' + i) {
-            if (snareBool[i] === false) { 
-                snareBool[i] = true; $(event.target).addClass('litSteps');
-                snare.play();
-            }
-            else { 
-                snareBool[i] = false; $(event.target).removeClass('litSteps');
-                stepRemoveFx.play();
-            }  
-        }
-    }
-    for (var i=0; i<=63; i++) {
-        if (event.target.id === '#hiHatC' + i) {
-            if (hiHatCBool[i] === false) { 
-                hiHatCBool[i] = true; $(event.target).addClass('litSteps');
-                hiHatC.play();
-            }
-            else { 
-                hiHatCBool[i] = false; $(event.target).removeClass('litSteps');
-                stepRemoveFx.play();
-            }  
-        }
-    }
-    for (var i=0; i<=63; i++) {
-        if (event.target.id === '#hiHatOp' + i) {
-            if (hiHatOpBool[i] === false) { 
-                hiHatOpBool[i] = true; $(event.target).addClass('litSteps');
-                hiHatOp.play({volume: .5});
-            }
-            else { 
-                hiHatOpBool[i] = false; $(event.target).removeClass('litSteps');
-                stepRemoveFx.play();
-            }  
-        }
-    }
+}
+$('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) {
+    stepListenerMaker(kickBool, '#kick', kick)
+    stepListenerMaker(snareBool, '#snare', snare)
+    stepListenerMaker(hiHatCBool, '#hiHatC', hiHatC)
+    stepListenerMaker(hiHatOpBool, '#hiHatOp', hiHatOp)
 })
 
-//// Build empty loops for each instrument.
+//// Build and launch corresponding loops for each instrument:
 //// Set timeout for each updateAudioSrc.
 var timeouts = [];
-function kickLoop() {
+function loopMaker(bool, src) {
     var beatCounter = 0;
     for (var i=0; i<=63; i++) {
-        if (kickBool[i] && !computerLoopClickable && !instructionsClickable) { 
+        if (bool[i] && !computerLoopClickable && !instructionsClickable) { 
             timeouts.push(setTimeout(function() {
-                visualizerAudioSrc = 'assets/kickEdit.mp3';
-                updateAudioSrc();
-                audio.play();
-                console.log('kitLoop setTimeout1 entered')
-                console.timeEnd('kick')
+                updateAudioSrc(src);
             }, beat * beatCounter * 1000));
         };
         beatCounter += 0.0625;
     }
 }
 
-function snareLoop() {
-    var beatCounter = 0;
-    for (var i=0; i<=63; i++) {
-        if (snareBool[i]) { 
-            timeouts.push(setTimeout(function() {
-                visualizerAudioSrc = 'assets/snareNoise.mp3';
-                updateAudioSrc();
-                audio.play();
-            }, beat * beatCounter * 1000));               
-        }
-        beatCounter += 0.0625;
-    }
-}
-
-function hiHatCLoop() {
-    var beatCounter = 0;
-    for (var i=0; i<=63; i++) {
-        if (hiHatCBool[i]) { 
-            timeouts.push(setTimeout(function() {
-                visualizerAudioSrc = 'assets/hiHatC.mp3';
-                updateAudioSrc();
-                audio.play();
-            }, beat * beatCounter * 1000));
-        }
-        beatCounter += 0.0625;
-    }
-}
-
-function hiHatOpLoop() {
-    var beatCounter = 0;
-    for (var i=0; i<=63; i++) {
-        if (hiHatOpBool[i]) { 
-            timeouts.push(setTimeout(function() {
-                visualizerAudioSrc = 'assets/hiHatOp.mp3';
-                updateAudioSrc();
-                audio.play();
-            }, beat * beatCounter * 1000));
-        }
-        beatCounter += 0.0625;
-    }
-}
-
 //// Launch entire kit's loops & start metronome.
 function kitLoop() {
-    kickLoop();
-    snareLoop();
-    hiHatCLoop();
-    hiHatOpLoop();
+//    kickLoop();
+    loopMaker(kickBool, 'assets/kickEdit.mp3');
+    loopMaker(snareBool, 'assets/snareNoise.mp3');
+    loopMaker(hiHatCBool, 'assets/hiHatC.mp3');
+    loopMaker(hiHatOpBool, 'assets/hiHatOp.mp3');
     metronome();
     flashOrBar();
 }
 
+//// Make steps light up in sync with the beat:
 function addMetronomeClass() {
     $('.kickSteps').eq(0).addClass('metronome');
     $('.snareSteps').eq(0).addClass('metronome');
@@ -225,7 +138,6 @@ function metronomeLightUp(className, stepCount) {
     }
 }
 
-//// Make divs light up with metronome.
 var intervals = [];
 function metronome() {
     if (!computerLoopClickable) {   
@@ -249,17 +161,20 @@ var $instructions = $('#instructions')
 var instructionsClickable = true;
 var instructions = false;
 
+//// Reset clickability:
+function allClickable() {
+    computerLoopClickable = true;
+    userLoopClickable = true;
+    instructionsClickable = true;
+}
+
 $($instructions).click(function() {
     if (instructionsClickable) { 
-        visualizerAudioSrc = 'assets/computerInstructions.mp3';
-        updateAudioSrc();
-        audio.play();
+        updateAudioSrc('assets/computerInstructions.mp3');
         flashOrBar();
         setTimeout(function(instrTO) { 
             instructions = true; 
-            instructionsClickable = true;
-            computerLoopClickable = true;
-            userLoopClickable = true;
+            allClickable();
             toggleInstructions();
             $instructions.removeClass('instructionsFlash');
         }, 49000);
@@ -275,7 +190,6 @@ $($instructions).click(function() {
 
 function toggleInstructions() {
     if (instructions) {
-        console.log('instructions "if" entered')
         if (userLoopClickable || computerLoopClickable) {
             $instructions.hover(function() {
                 $($instructions).text('#_____Instructions_____#')
@@ -291,11 +205,9 @@ clickCounter = 0;
 if (clickCounter < 1) { 
     clkIntInstructions = setInterval(function() {
         $instructions.toggleClass('instructionsFlash');
-        console.log("instructions interval entered")
     }, 500);
 }
 $instructions.click(function() {
-    console.log("should turn off from here!");
     clickCounter++;
     clearInterval(clkIntInstructions);
 });
@@ -311,12 +223,9 @@ function flashOrBar() {
     }, 500);   
     $pipeBar.click(function() {
         clearInterval(clkIntOrBar);
-        visualizerAudioSrc = 'assets/emptyAudio.mp3';
-        updateAudioSrc();
+        updateAudioSrc('assets/emptyAudio.mp3');
         haltFx.play();
-        userLoopClickable = true;
-        computerLoopClickable = true;
-        instructionsClickable = true;
+        allClickable();
         $instructions.removeClass('instructionsFlash');
         $pipeBar.removeClass('orBarFlash');
         for (var i = 0; i < timeouts.length; i++) {
@@ -351,16 +260,11 @@ $('#startComputerLoop').click(function(e) {
         userLoopClickable = false;
         instructionsClickable = false;
         e.target.innerHTML = "now_that's_d3rang3d";
-        visualizerAudioSrc = 'assets/computerLoopEasy.mp3';
-        updateAudioSrc();
-        audio.play();
+        updateAudioSrc('assets/computerLoopEasy.mp3');
         flashOrBar();
         setTimeout(function() { 
-            console.log('setTimeout entered in toggle pause');
             e.target.innerHTML = "play_my_wick3d_beat";
-            computerLoopClickable = true;
-            userLoopClickable = true;
-            instructionsClickable = true;
+            allClickable();
         }, loopMs)
     };
     computerLoopClickable = false;
@@ -381,12 +285,9 @@ if (!victory) {
             e.target.innerHTML = "that_sauce_is_w3ak";
             kitLoop(); 
             setTimeout(function() { 
-                console.log('setTimeout entered in toggle pause')
                 e.target.innerHTML = "play_your_wanna_beat";
                 userLoopClickable = true;
-                computerLoopClickable = true;
-                instructionsClickable = true;
-                userLoopClickable = true;
+                allClickable();
             }, loopMs)
         } 
         }
@@ -400,17 +301,13 @@ function winCheck() {
         if (!snareBool[0] && !snareBool[1] && !snareBool[2] && !snareBool[3] && !snareBool[4] && !snareBool[5] && !snareBool[6] && !snareBool[7] && snareBool[8] && !snareBool[9] && !snareBool[10] && !snareBool[11] && !snareBool[12] && !snareBool[13] && !snareBool[14] && !snareBool[15] && !snareBool[16] && !snareBool[17] && !snareBool[18] && !snareBool[19] && !snareBool[20] && !snareBool[21] && !snareBool[22] && !snareBool[23] && snareBool[24] && !snareBool[25] && !snareBool[26] && !snareBool[27] && !snareBool[28] && !snareBool[29] && snareBool[30] && !snareBool[31] && !snareBool[32] && !snareBool[33] && !snareBool[34] && !snareBool[35] && !snareBool[36] && !snareBool[37] && !snareBool[38] && !snareBool[39] && snareBool[40] && !snareBool[41] && !snareBool[41] && !snareBool[43] && !snareBool[44] && !snareBool[45] && !snareBool[46] && !snareBool[47] && !snareBool[48] && !snareBool[49] && !snareBool[50] && !snareBool[51] && !snareBool[52] && !snareBool[53] && !snareBool[54] && !snareBool[55] && snareBool[56] && !snareBool[57] && snareBool[58] && !snareBool[59] && !snareBool[60] && !snareBool[61] && snareBool[62] && !snareBool[63]) {
             if (!hiHatCBool[0] && !hiHatCBool[1] && hiHatCBool[2] && !hiHatCBool[3] && !hiHatCBool[4] && !hiHatCBool[5] && !hiHatCBool[6] && !hiHatCBool[7] && !hiHatCBool[8] && !hiHatCBool[9] && !hiHatCBool[10] && !hiHatCBool[11] && !hiHatCBool[12] && !hiHatCBool[13] && !hiHatCBool[14] && !hiHatCBool[15] && !hiHatCBool[16] && !hiHatCBool[17] && hiHatCBool[18] && !hiHatCBool[19] && !hiHatCBool[20] && !hiHatCBool[21] && !hiHatCBool[22] && !hiHatCBool[23] && !hiHatCBool[24] && !hiHatCBool[25] && !hiHatCBool[26] && !hiHatCBool[27] && !hiHatCBool[28] && !hiHatCBool[29] && !hiHatCBool[30] && !hiHatCBool[31] && !hiHatCBool[32] && !hiHatCBool[33] && hiHatCBool[34] && !hiHatCBool[35] && !hiHatCBool[36] && !hiHatCBool[37] && !hiHatCBool[38] && !hiHatCBool[39] && !hiHatCBool[40] && !hiHatCBool[41] && !hiHatCBool[41] && !hiHatCBool[43] && !hiHatCBool[44] && !hiHatCBool[45] && !hiHatCBool[46] && !hiHatCBool[47] && !hiHatCBool[48] && !hiHatCBool[49] && hiHatCBool[50] && !hiHatCBool[51] && !hiHatCBool[52] && !hiHatCBool[53] && !hiHatCBool[54] && !hiHatCBool[55] && !hiHatCBool[56] && !hiHatCBool[57] && !hiHatCBool[58] && !hiHatCBool[59] && hiHatCBool[60] && !hiHatCBool[61] && !hiHatCBool[62] && !hiHatCBool[63]) {
                 if (!hiHatOpBool[0] && !hiHatOpBool[1] && !hiHatOpBool[2] && !hiHatOpBool[3] && !hiHatOpBool[4] && !hiHatOpBool[5] && !hiHatOpBool[6] && !hiHatOpBool[7] && !hiHatOpBool[8] && !hiHatOpBool[9] && !hiHatOpBool[10] && !hiHatOpBool[11] && hiHatOpBool[12] && !hiHatOpBool[13] && !hiHatOpBool[14] && !hiHatOpBool[15] && !hiHatOpBool[16] && !hiHatOpBool[17] && !hiHatOpBool[18] && !hiHatOpBool[19] && !hiHatOpBool[20] && !hiHatOpBool[21] && !hiHatOpBool[22] && !hiHatOpBool[23] && !hiHatOpBool[24] && !hiHatOpBool[25] && !hiHatOpBool[26] && !hiHatOpBool[27] && !hiHatOpBool[28] && !hiHatOpBool[29] && !hiHatOpBool[30] && !hiHatOpBool[31] && !hiHatOpBool[32] && !hiHatOpBool[33] && !hiHatOpBool[34] && !hiHatOpBool[35] && !hiHatOpBool[36] && !hiHatOpBool[37] && !hiHatOpBool[38] && !hiHatOpBool[39] && !hiHatOpBool[40] && !hiHatOpBool[41] && !hiHatOpBool[41] && !hiHatOpBool[43] && hiHatOpBool[44] && !hiHatOpBool[45] && !hiHatOpBool[46] && !hiHatOpBool[47] && !hiHatOpBool[48] && !hiHatOpBool[49] && !hiHatOpBool[50] && !hiHatOpBool[51] && !hiHatOpBool[52] && !hiHatOpBool[53] && !hiHatOpBool[54] && !hiHatOpBool[55] && !hiHatOpBool[56] && !hiHatOpBool[57] && !hiHatOpBool[58] && !hiHatOpBool[59] && !hiHatOpBool[60] && !hiHatOpBool[61] && !hiHatOpBool[62] && !hiHatOpBool[63]) {
-                    console.log('User victoryyyyyy!!!');
                     $('#toggleUserLoop').text("acceptable_sauce");
                     victory = true;
-                    visualizerAudioSrc = 'assets/computerDefeat.mp3';
-                    updateAudioSrc();
-                    audio.play();
+                    updateAudioSrc('assets/computerDefeat.mp3');
                 };
             };
         };
     }
-    else { console.log('no win yet!') }
 }
 
 //// Visualizer:
@@ -430,10 +327,11 @@ function initMp3Player(){
 	frameLooper();
 }
 
-// Add function to update audio src.
-function updateAudioSrc() {
-    audio.src = visualizerAudioSrc;
+// Update audio src and play it to be visualized:
+function updateAudioSrc(src) {
+    audio.src = src;
     document.getElementById('audio_box').appendChild(audio);
+    audio.play();
 }
 
 function frameLooper(){
