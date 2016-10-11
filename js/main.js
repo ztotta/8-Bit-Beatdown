@@ -1,10 +1,3 @@
-//// new for project 10/5/16
-//// CURRENT BUGS:
-//// css gets swallowed when <~650px
-//// get footer functioning
-//// pipeBar not overflashing, but 
-//// haltFX get louder(?)
-
 console.log("main js loaded")
 
 var bpm = 95; 
@@ -19,7 +12,7 @@ audio.autoplay = false;
 var visualizerAudioSrc = 'assets/kickEdit.mp3';
 audio.src = visualizerAudioSrc;
 
-//// create "instruments" for each sound. WORKING
+//// Create "instruments" for each sound. 
 var kick = new Wad({source: 'assets/kickEdit.mp3'});
 var snare = new Wad({source: 'assets/snareNoise.mp3'});
     snare.setVolume(1);
@@ -40,7 +33,7 @@ var computerDefeat = new Wad({
     env : { attack : 0, decay : 100000, sustain : 1, hold : 1, release : 1 }})
     computerInstructions.setVolume(2.2)
 
-//// create 64 booleans for each instrument. WORKING
+//// Create 64 booleans for each instrument.
 var kickBool = [];
 for (var i=0; i<64; i++) { kickBool.push(false) }
 
@@ -53,7 +46,7 @@ for (var i=0; i<64; i++) { hiHatCBool.push(false)}
 var hiHatOpBool = [];
 for (var i=0; i<64; i++) { hiHatOpBool.push(false) }
 
-//// assign id's and text to each step. WORKING
+//// Assign id's to each step
 function stepIdMaker () {
     for (var i=0; i<= 63; i++) {
         $('.kickSteps').eq(i).attr('id', '#kick' + i);
@@ -70,8 +63,7 @@ function stepIdMaker () {
 }
 stepIdMaker();
 
-//// assign unique class to quarter notes to clarify the grid 
-//// WORKING
+//// Assign unique class to quarter notes to clarify the grid. 
 function quarterNoteMaker () {
     for (var i=0; i<= 63; i+=4) {
         $('.kickSteps').eq(i).addClass('quarterNote');
@@ -88,18 +80,14 @@ function quarterNoteMaker () {
 }
 quarterNoteMaker();
 
-//// add click listener to steps and toggle boolean values 
-//// WORKING
-//// toggle step lighting up when selected/deselected WORKING
+//// Add click listener to steps and toggle boolean values. 
+//// Toggle step lighting up when selected/deselected. 
 $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) {
     for (var i=0; i<=63; i++) {
         if (event.target.id === '#kick' + i) {
             if (kickBool[i] === false) { 
                 kickBool[i] = true; $(event.target).addClass('litSteps'); 
                 kick.play();
-//                visualizerAudioSrc = 'assets/kickEdit.mp3';
-//                updateAudioSrc(); 
-//                audio.play();
             }
             else { 
                 kickBool[i] = false; $(event.target).removeClass('litSteps');
@@ -112,9 +100,6 @@ $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) 
             if (snareBool[i] === false) { 
                 snareBool[i] = true; $(event.target).addClass('litSteps');
                 snare.play();
-//                visualizerAudioSrc = snare; RECORD
-//                visualizerAudioSrc = 'assets/snare.wav'
-//                updateAudioSrc();
             }
             else { 
                 snareBool[i] = false; $(event.target).removeClass('litSteps');
@@ -148,16 +133,13 @@ $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) 
     }
 })
 
-//// build empty loops for each instrument WORKING
-//// bounce 
-//// set timeout for each updateAudioSrc
+//// Build empty loops for each instrument.
+//// Set timeout for each updateAudioSrc.
 var timeouts = [];
 function kickLoop() {
     var beatCounter = 0;
-//    flashOrBar();
     for (var i=0; i<=63; i++) {
         if (kickBool[i] && !computerLoopClickable && !instructionsClickable) { 
-//            kick.play({wait : beat * beatCounter});
             timeouts.push(setTimeout(function() {
                 visualizerAudioSrc = 'assets/kickEdit.mp3';
                 updateAudioSrc();
@@ -168,16 +150,6 @@ function kickLoop() {
         };
         beatCounter += 0.0625;
     }
-//    flashOrBar();
-        //// if orBar is clicked, reassign kick.play then 
-        //// assign is again? Just break the code and 
-        //// reassemble it again ?
-        //// UPDATE: can reassign it this way, but the loop 
-        //// still plays through as executed (need it above?)
-//    $('#orBar').click(function() {
-//    kick = new Wad({source: 'assets/haltFx.mp3'});        
-//    console.log('or bar clicked in kickLoop')
-//        }) 
 }
 
 function snareLoop() {
@@ -222,7 +194,7 @@ function hiHatOpLoop() {
     }
 }
 
-//// launch entire kit's loops & metronome WORKING
+//// Launch entire kit's loops & start metronome.
 function kitLoop() {
     kickLoop();
     snareLoop();
@@ -232,80 +204,68 @@ function kitLoop() {
     flashOrBar();
 }
 
-//// make divs light up with metronome WORKING
-var intervals = [];
-function metronome() {
-    if (!computerLoopClickable) {    
-        $('.kickSteps').eq(0).addClass('metronome');
-        $('.snareSteps').eq(0).addClass('metronome');
-        $('.hiHatCSteps').eq(0).addClass('metronome');
-        $('.hiHatOpSteps').eq(0).addClass('metronome');
-        var stepCount = 4;
-        intervals.push(setInterval(function(metronomeInterval) {  
-            for (var i=stepCount; i<stepCount+1; i++) {
-                $('.kickSteps').eq(i).addClass('metronome');
-                $('.kickSteps').eq(i-4).removeClass('metronome');
-            }
-            for (var i=stepCount; i<stepCount+1; i++) {
-                $('.snareSteps').eq(i).addClass('metronome');
-                $('.snareSteps').eq(i-4).removeClass('metronome')
-            }
-            for (var i=stepCount; i<stepCount+1; i++) {
-                $('.hiHatCSteps').eq(i).addClass('metronome');
-                $('.hiHatCSteps').eq(i-4).removeClass('metronome')
-            }
-            for (var i=stepCount; i<stepCount+1; i++) {
-                $('.hiHatOpSteps').eq(i).addClass('metronome');
-                $('.hiHatOpSteps').eq(i-4).removeClass('metronome')
-            }
-            stepCount += 4;
-        }, beat * 250));
-    //    $('#orBar').click(function() {
-    //        for (var i = 0; i < timeouts.length; i++) {
-    //            clearInterval(intervals[i]);
-    //        };
-    //        for (var i=0; i<stepCount+1; i++) {
-    //            $('.kickSteps').eq(i).removeClass('metronome');
-    //            $('.snareSteps').eq(i).removeClass('metronome');
-    //            $('.hiHatCSteps').eq(i).removeClass('metronome');
-    //            $('.hiHatOpSteps').eq(i).removeClass('metronome');
-    //        };
-    //    })
+function addMetronomeClass() {
+    $('.kickSteps').eq(0).addClass('metronome');
+    $('.snareSteps').eq(0).addClass('metronome');
+    $('.hiHatCSteps').eq(0).addClass('metronome');
+    $('.hiHatOpSteps').eq(0).addClass('metronome');
+}
+
+function removeMetronomeClass() {
+    $('.kickSteps').eq(0).removeClass('metronome');
+    $('.snareSteps').eq(0).removeClass('metronome');
+    $('.hiHatCSteps').eq(0).removeClass('metronome');
+    $('.hiHatOpSteps').eq(0).removeClass('metronome');
+}
+
+function metronomeLightUp(className, stepCount) {
+    for (var i=stepCount; i<stepCount+1; i++) {
+        $(className).eq(i).addClass('metronome');
+        $(className).eq(i-4).removeClass('metronome');
     }
 }
 
-//// clear setTimeouts if user pause's wanna_beat WORKING
+//// Make divs light up with metronome.
+var intervals = [];
+function metronome() {
+    if (!computerLoopClickable) {   
+        addMetronomeClass();
+        var stepCount = 4;
+        intervals.push(setInterval(function(metronomeInterval) {  
+           metronomeLightUp('.kickSteps', stepCount);
+           metronomeLightUp('.snareSteps', stepCount);
+           metronomeLightUp('.hiHatCSteps', stepCount);
+           metronomeLightUp('.hiHatOpSteps', stepCount);
+            stepCount += 4;
+        }, beat * 250));
+        removeMetronomeClass();
+    }
+}
 
-//function haltUserLoop() {
-
-//}
-
-//// deliver instructions on click WORKING
-//// prevent from doubling WORKING
-//// toggle "Instructions" & "PRINT, etc" WORKING
+//// Deliver instructions on click.
+//// Prevent from doubling.
+//// Toggle "Instructions" & "PRINT, etc."
 var $instructions = $('#instructions')
 var instructionsClickable = true;
 var instructions = false;
 
 $($instructions).click(function() {
     if (instructionsClickable) { 
-//        computerInstructions.play(); 
         visualizerAudioSrc = 'assets/computerInstructions.mp3';
         updateAudioSrc();
         audio.play();
         flashOrBar();
-        setTimeout(function() { 
-            console.log('setTimeout entered in toggle pause')
+        setTimeout(function(instrTO) { 
             instructions = true; 
             instructionsClickable = true;
             computerLoopClickable = true;
             userLoopClickable = true;
             toggleInstructions();
+            $instructions.removeClass('instructionsFlash');
         }, 49000);
         computerLoopClickable = false;
         userLoopClickable = false;
     }; 
-    console.log('instructions/print clicked');
     instructions = false;
     instructionsClickable = false;
     if (userLoopClickable && computerLoopClickable) {
@@ -326,7 +286,7 @@ function toggleInstructions() {
     }
 }
 
-//// make instructions flash until clicked WORKING
+//// Make instructions flash until clicked.
 clickCounter = 0;
 if (clickCounter < 1) { 
     clkIntInstructions = setInterval(function() {
@@ -340,26 +300,25 @@ $instructions.click(function() {
     clearInterval(clkIntInstructions);
 });
 
-//// make " ||||| " flash when computerLoop and Instructions 
-//// play WORKING
-//// clear userLoop WORKING
-//// clear metronome WORKING
+//// Make " ||||| " flash when computerLoop, userLoop 
+//// and Instructions play. 
+//// Clear userLoop. 
+//// Clear metronome.
 var $pipeBar = $('#orBar');
 function flashOrBar() {
     clkIntOrBar = setInterval(function() {
         $pipeBar.toggleClass('orBarFlash');
-//        console.log('or bar interval entered')
     }, 500);   
     $pipeBar.click(function() {
-//        console.log("OR Bar clicked!");
         clearInterval(clkIntOrBar);
         visualizerAudioSrc = 'assets/emptyAudio.mp3';
         updateAudioSrc();
-//        audio.play(); 
         haltFx.play();
         userLoopClickable = true;
         computerLoopClickable = true;
         instructionsClickable = true;
+        $instructions.removeClass('instructionsFlash');
+        $pipeBar.removeClass('orBarFlash');
         for (var i = 0; i < timeouts.length; i++) {
             clearTimeout(timeouts[i]);
         };
@@ -382,17 +341,16 @@ function flashOrBar() {
     }, 49000);
 }
 
-//// connect 'click' to #playComputerLoop WORKING
-//// call computer's beat WORKING
-//// prevent beat from doubling WORKING
-//// toggle "play_my_wicked_beat" text WORKING
+//// Connect 'click' to #playComputerLoop.
+//// Call computer's beat.
+//// Prevent beat from doubling.
+//// Toggle "play_my_wicked_beat" text.
 var computerLoopClickable = true;
 $('#startComputerLoop').click(function(e) {
     if (computerLoopClickable) {
         userLoopClickable = false;
         instructionsClickable = false;
         e.target.innerHTML = "now_that's_d3rang3d";
-////        computerLoopEasy.play(); 
         visualizerAudioSrc = 'assets/computerLoopEasy.mp3';
         updateAudioSrc();
         audio.play();
@@ -408,25 +366,20 @@ $('#startComputerLoop').click(function(e) {
     computerLoopClickable = false;
 })
 
-//// toggle "play/pause" text WORKING
+//// Toggle "play/pause" text.
+//// Launch entire kit's loops.
 var victory = false;
 var pauser = false;
 var userLoopClickable = true;
 if (!victory) {
-//    loopClickable = true;
     $('#toggleUserLoop').click(function(e) {
         if (userLoopClickable) {
             computerLoopClickable = false;
             instructionsClickable = false;
             userLoopClickable = false;
-//            haltUserLoop();
         if (e.target.innerHTML === "play_your_wanna_beat" || "acc3ptable sauce") {
             e.target.innerHTML = "that_sauce_is_w3ak";
-//            if (victory) { 
-//                e.target.innerHTML = "acc3ptable_sauce"}
-//            pauser = false;
             kitLoop(); 
-// insert audio readjustment here?
             setTimeout(function() { 
                 console.log('setTimeout entered in toggle pause')
                 e.target.innerHTML = "play_your_wanna_beat";
@@ -439,8 +392,8 @@ if (!victory) {
         }
 })}
 
-//// check for victory on every div click (all step var's 
-//// match the key's bool values) WORKING
+//// Check for victory on every step div click (that all user 
+//// step values match the key's bool values).
 $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(winCheck);
 function winCheck() {
     if (kickBool[0] && !kickBool[1] && !kickBool[2] && !kickBool[3] && !kickBool[4] && !kickBool[5] && !kickBool[6] && !kickBool[7] && !kickBool[8] && !kickBool[9] && !kickBool[10] && !kickBool[11] && !kickBool[12] && !kickBool[13] && !kickBool[14] && !kickBool[15] && kickBool[16] && !kickBool[17] && !kickBool[18] && !kickBool[19] && !kickBool[20] && !kickBool[21] && !kickBool[22] && !kickBool[23] && !kickBool[24] && !kickBool[25] && !kickBool[26] && !kickBool[27] && !kickBool[28] && !kickBool[29] && !kickBool[30] && !kickBool[31] && kickBool[32] && !kickBool[33] && !kickBool[34] && !kickBool[35] && !kickBool[36] && !kickBool[37] && !kickBool[38] && !kickBool[39] && !kickBool[40] && !kickBool[41] &!kickBool[42] && !kickBool[43] && !kickBool[44] && !kickBool[45] && !kickBool[46] && !kickBool[47] && kickBool[48] && !kickBool[49] && !kickBool[50] && !kickBool[51] && !kickBool[52] && !kickBool[53] && !kickBool[54] && !kickBool[55] && !kickBool[56] && !kickBool[57] && !kickBool[58] && !kickBool[59] && !kickBool[60] && !kickBool[61] && !kickBool[62] && !kickBool[63]) {
@@ -448,9 +401,8 @@ function winCheck() {
             if (!hiHatCBool[0] && !hiHatCBool[1] && hiHatCBool[2] && !hiHatCBool[3] && !hiHatCBool[4] && !hiHatCBool[5] && !hiHatCBool[6] && !hiHatCBool[7] && !hiHatCBool[8] && !hiHatCBool[9] && !hiHatCBool[10] && !hiHatCBool[11] && !hiHatCBool[12] && !hiHatCBool[13] && !hiHatCBool[14] && !hiHatCBool[15] && !hiHatCBool[16] && !hiHatCBool[17] && hiHatCBool[18] && !hiHatCBool[19] && !hiHatCBool[20] && !hiHatCBool[21] && !hiHatCBool[22] && !hiHatCBool[23] && !hiHatCBool[24] && !hiHatCBool[25] && !hiHatCBool[26] && !hiHatCBool[27] && !hiHatCBool[28] && !hiHatCBool[29] && !hiHatCBool[30] && !hiHatCBool[31] && !hiHatCBool[32] && !hiHatCBool[33] && hiHatCBool[34] && !hiHatCBool[35] && !hiHatCBool[36] && !hiHatCBool[37] && !hiHatCBool[38] && !hiHatCBool[39] && !hiHatCBool[40] && !hiHatCBool[41] && !hiHatCBool[41] && !hiHatCBool[43] && !hiHatCBool[44] && !hiHatCBool[45] && !hiHatCBool[46] && !hiHatCBool[47] && !hiHatCBool[48] && !hiHatCBool[49] && hiHatCBool[50] && !hiHatCBool[51] && !hiHatCBool[52] && !hiHatCBool[53] && !hiHatCBool[54] && !hiHatCBool[55] && !hiHatCBool[56] && !hiHatCBool[57] && !hiHatCBool[58] && !hiHatCBool[59] && hiHatCBool[60] && !hiHatCBool[61] && !hiHatCBool[62] && !hiHatCBool[63]) {
                 if (!hiHatOpBool[0] && !hiHatOpBool[1] && !hiHatOpBool[2] && !hiHatOpBool[3] && !hiHatOpBool[4] && !hiHatOpBool[5] && !hiHatOpBool[6] && !hiHatOpBool[7] && !hiHatOpBool[8] && !hiHatOpBool[9] && !hiHatOpBool[10] && !hiHatOpBool[11] && hiHatOpBool[12] && !hiHatOpBool[13] && !hiHatOpBool[14] && !hiHatOpBool[15] && !hiHatOpBool[16] && !hiHatOpBool[17] && !hiHatOpBool[18] && !hiHatOpBool[19] && !hiHatOpBool[20] && !hiHatOpBool[21] && !hiHatOpBool[22] && !hiHatOpBool[23] && !hiHatOpBool[24] && !hiHatOpBool[25] && !hiHatOpBool[26] && !hiHatOpBool[27] && !hiHatOpBool[28] && !hiHatOpBool[29] && !hiHatOpBool[30] && !hiHatOpBool[31] && !hiHatOpBool[32] && !hiHatOpBool[33] && !hiHatOpBool[34] && !hiHatOpBool[35] && !hiHatOpBool[36] && !hiHatOpBool[37] && !hiHatOpBool[38] && !hiHatOpBool[39] && !hiHatOpBool[40] && !hiHatOpBool[41] && !hiHatOpBool[41] && !hiHatOpBool[43] && hiHatOpBool[44] && !hiHatOpBool[45] && !hiHatOpBool[46] && !hiHatOpBool[47] && !hiHatOpBool[48] && !hiHatOpBool[49] && !hiHatOpBool[50] && !hiHatOpBool[51] && !hiHatOpBool[52] && !hiHatOpBool[53] && !hiHatOpBool[54] && !hiHatOpBool[55] && !hiHatOpBool[56] && !hiHatOpBool[57] && !hiHatOpBool[58] && !hiHatOpBool[59] && !hiHatOpBool[60] && !hiHatOpBool[61] && !hiHatOpBool[62] && !hiHatOpBool[63]) {
                     console.log('User victoryyyyyy!!!');
-                    $('#toggleUserLoop').text("acceptable_sauce"); //// very icebox-y
+                    $('#toggleUserLoop').text("acceptable_sauce");
                     victory = true;
-//                    computerDefeat.play();
                     visualizerAudioSrc = 'assets/computerDefeat.mp3';
                     updateAudioSrc();
                     audio.play();
@@ -461,68 +413,45 @@ function winCheck() {
     else { console.log('no win yet!') }
 }
 
-//// visualizer: WORKING
-// Create a new instance of an audio object and adjust some of 
-// its properties (above---^)
-
-// Establish all variables that your Analyser will use
+//// Visualizer:
 var canvas, ctx, source, context, analyser, fbc_array, bars, bar_x, bar_width, bar_height;
-// Initialize the MP3 player after the page loads all of its 
-// HTML into the window
 window.addEventListener("load", initMp3Player, false); 
 document.getElementById('audio_box').appendChild(audio);
 function initMp3Player(){
     audio.src = visualizerAudioSrc;
-//	document.getElementById('audio_box').removeChild(audio);
     document.getElementById('audio_box').appendChild(audio);
-	context = new AudioContext(); // AudioContext object instance
-	analyser = context.createAnalyser(); // AnalyserNode method
+	context = new AudioContext(); 
+	analyser = context.createAnalyser(); 
 	canvas = document.getElementById('analyser_render');
 	ctx = canvas.getContext('2d');
-	// Re-route audio playback into the processing graph of the AudioContext
     source = context.createMediaElementSource(audio); 
 	source.connect(analyser);
 	analyser.connect(context.destination);
 	frameLooper();
 }
 
-// adding function to update audio src's
+// Add function to update audio src.
 function updateAudioSrc() {
     audio.src = visualizerAudioSrc;
     document.getElementById('audio_box').appendChild(audio);
 }
 
-// frameLooper() animates any style of graphics you wish to 
-// the audio frequency
-// Looping at the default frame rate that the browser 
-// provides(approx. 60 FPS)
 function frameLooper(){
 	window.requestAnimationFrame(frameLooper);
 	fbc_array = new Uint8Array(analyser.frequencyBinCount);
 	analyser.getByteFrequencyData(fbc_array);
-	ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-	ctx.fillStyle = '#697368'; // Color of the bars
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.fillStyle = '#697368'; 
 	bars = 100;
 	for (var i = 0; i < bars; i++) {
 		bar_x = i * 3;
 		bar_width = 3;
 		bar_height = -(fbc_array[i] / 2);
-		//  fillRect( x, y, width, height ) // 
 		ctx.fillRect(bar_x, canvas.height, bar_width, bar_height);
 	}
 }
 
-// https://www.developphp.com/video/JavaScript/Analyser-Bars-Animation-HTML-Audio-API-Tutorial
-//// EXPERIMENTING:
-//$8BitBeatdown = $('#8BitBeatdown')
-//$8BitBeatdown.click(function(e) {
-//    visualizerAudioSrc = "assets/kickEdit.mp3"
-//    updateAudioSrc();
-//    audio.play();
-//    }
-//)
-
-//// tooltip kit
+//// Tooltip styling kit:
 (function () {
     var ID = "tooltip", CLS_ON = "tooltip_ON", FOLLOW = true,
     DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 10,
@@ -544,9 +473,3 @@ function frameLooper(){
     });
     if (FOLLOW) { $(document).on("mousemove", "." + CLS_ON, showAt); }
 }());
-
-//// BEATS:
-//// MEASURE 1: 00 01 02 03 | 04 05 06 07 | 08 09 10 11 | 12 13 14 15
-//// MEASURE 2: 16 17 18 19 | 20 21 22 23 | 24 25 26 27 | 28 29 30 31
-//// MEASURE 3: 32 33 34 35 | 36 37 38 39 | 40 41 42 43 | 44 45 46 47
-//// MEASURE 4: 48 49 50 51 | 52 53 54 55 | 56 57 58 59 | 60 61 62 63
