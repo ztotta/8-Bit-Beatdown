@@ -1,8 +1,9 @@
 //// new for project 10/5/16
 //// CURRENT BUGS:
 //// css gets swallowed when <~650px
-//// visualizer not receiving userLoop
-//// can't stop userLoop immediately
+//// get footer functioning
+//// pipeBar not overflashing, but 
+//// haltFX get louder(?)
 
 console.log("main js loaded")
 
@@ -15,7 +16,7 @@ var fakeAudio = new Audio();
 audio.controls = false;
 audio.loop = false;
 audio.autoplay = false;
-var visualizerAudioSrc = "assets/kickEdit.mp3";
+var visualizerAudioSrc = 'assets/kickEdit.mp3';
 audio.src = visualizerAudioSrc;
 
 //// create "instruments" for each sound. WORKING
@@ -150,19 +151,20 @@ $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) 
 //// build empty loops for each instrument WORKING
 //// bounce 
 //// set timeout for each updateAudioSrc
+var timeouts = [];
 function kickLoop() {
     var beatCounter = 0;
-    flashOrBar();
+//    flashOrBar();
     for (var i=0; i<=63; i++) {
         if (kickBool[i] && !computerLoopClickable && !instructionsClickable) { 
 //            kick.play({wait : beat * beatCounter});
-            setTimeout(function() {
+            timeouts.push(setTimeout(function() {
                 visualizerAudioSrc = 'assets/kickEdit.mp3';
                 updateAudioSrc();
                 audio.play();
                 console.log('kitLoop setTimeout1 entered')
                 console.timeEnd('kick')
-            }, beat * beatCounter * 1000)
+            }, beat * beatCounter * 1000));
         };
         beatCounter += 0.0625;
     }
@@ -182,14 +184,12 @@ function snareLoop() {
     var beatCounter = 0;
     for (var i=0; i<=63; i++) {
         if (snareBool[i]) { 
-//            snare.play({wait : beat * beatCounter}); 
-            setTimeout(function() {
+            timeouts.push(setTimeout(function() {
                 visualizerAudioSrc = 'assets/snareNoise.mp3';
                 updateAudioSrc();
                 audio.play();
-            }, beat * beatCounter * 1000)                 
+            }, beat * beatCounter * 1000));               
         }
-//        if (!looper) { return } // not stopping immediately
         beatCounter += 0.0625;
     }
 }
@@ -198,12 +198,11 @@ function hiHatCLoop() {
     var beatCounter = 0;
     for (var i=0; i<=63; i++) {
         if (hiHatCBool[i]) { 
-//            hiHatC.play({wait : beat * beatCounter}) 
-            setTimeout(function() {
+            timeouts.push(setTimeout(function() {
                 visualizerAudioSrc = 'assets/hiHatC.mp3';
                 updateAudioSrc();
                 audio.play();
-            }, beat * beatCounter * 1000)
+            }, beat * beatCounter * 1000));
         }
         beatCounter += 0.0625;
     }
@@ -213,53 +212,73 @@ function hiHatOpLoop() {
     var beatCounter = 0;
     for (var i=0; i<=63; i++) {
         if (hiHatOpBool[i]) { 
-//            hiHatOp.play({wait : beat * beatCounter}) 
-            setTimeout(function() {
+            timeouts.push(setTimeout(function() {
                 visualizerAudioSrc = 'assets/hiHatOp.mp3';
                 updateAudioSrc();
                 audio.play();
-            }, beat * beatCounter * 1000)
+            }, beat * beatCounter * 1000));
         }
         beatCounter += 0.0625;
     }
 }
 
-//// launch entire kit's loops WORKING
+//// launch entire kit's loops & metronome WORKING
 function kitLoop() {
     kickLoop();
     snareLoop();
     hiHatCLoop();
     hiHatOpLoop();
     metronome();
+    flashOrBar();
 }
 
 //// make divs light up with metronome WORKING
+var intervals = [];
 function metronome() {
-    $('.kickSteps').eq(0).addClass('metronome');
-    $('.snareSteps').eq(0).addClass('metronome');
-    $('.hiHatCSteps').eq(0).addClass('metronome');
-    $('.hiHatOpSteps').eq(0).addClass('metronome');
-    var stepCount = 4;
-    setInterval(function() {  
-        for (var i=stepCount; i<stepCount+1; i++) {
-            $('.kickSteps').eq(i).addClass('metronome');
-            $('.kickSteps').eq(i-4).removeClass('metronome');
-        }
-        for (var i=stepCount; i<stepCount+1; i++) {
-            $('.snareSteps').eq(i).addClass('metronome');
-            $('.snareSteps').eq(i-4).removeClass('metronome')
-        }
-        for (var i=stepCount; i<stepCount+1; i++) {
-            $('.hiHatCSteps').eq(i).addClass('metronome');
-            $('.hiHatCSteps').eq(i-4).removeClass('metronome')
-        }
-        for (var i=stepCount; i<stepCount+1; i++) {
-            $('.hiHatOpSteps').eq(i).addClass('metronome');
-            $('.hiHatOpSteps').eq(i-4).removeClass('metronome')
-        }
-        stepCount += 4;
-    }, beat * 250);
+    if (!computerLoopClickable) {    
+        $('.kickSteps').eq(0).addClass('metronome');
+        $('.snareSteps').eq(0).addClass('metronome');
+        $('.hiHatCSteps').eq(0).addClass('metronome');
+        $('.hiHatOpSteps').eq(0).addClass('metronome');
+        var stepCount = 4;
+        intervals.push(setInterval(function(metronomeInterval) {  
+            for (var i=stepCount; i<stepCount+1; i++) {
+                $('.kickSteps').eq(i).addClass('metronome');
+                $('.kickSteps').eq(i-4).removeClass('metronome');
+            }
+            for (var i=stepCount; i<stepCount+1; i++) {
+                $('.snareSteps').eq(i).addClass('metronome');
+                $('.snareSteps').eq(i-4).removeClass('metronome')
+            }
+            for (var i=stepCount; i<stepCount+1; i++) {
+                $('.hiHatCSteps').eq(i).addClass('metronome');
+                $('.hiHatCSteps').eq(i-4).removeClass('metronome')
+            }
+            for (var i=stepCount; i<stepCount+1; i++) {
+                $('.hiHatOpSteps').eq(i).addClass('metronome');
+                $('.hiHatOpSteps').eq(i-4).removeClass('metronome')
+            }
+            stepCount += 4;
+        }, beat * 250));
+    //    $('#orBar').click(function() {
+    //        for (var i = 0; i < timeouts.length; i++) {
+    //            clearInterval(intervals[i]);
+    //        };
+    //        for (var i=0; i<stepCount+1; i++) {
+    //            $('.kickSteps').eq(i).removeClass('metronome');
+    //            $('.snareSteps').eq(i).removeClass('metronome');
+    //            $('.hiHatCSteps').eq(i).removeClass('metronome');
+    //            $('.hiHatOpSteps').eq(i).removeClass('metronome');
+    //        };
+    //    })
+    }
 }
+
+//// clear setTimeouts if user pause's wanna_beat WORKING
+
+//function haltUserLoop() {
+
+//}
 
 //// deliver instructions on click WORKING
 //// prevent from doubling WORKING
@@ -323,14 +342,16 @@ $instructions.click(function() {
 
 //// make " ||||| " flash when computerLoop and Instructions 
 //// play WORKING
+//// clear userLoop WORKING
+//// clear metronome WORKING
 var $pipeBar = $('#orBar');
 function flashOrBar() {
     clkIntOrBar = setInterval(function() {
         $pipeBar.toggleClass('orBarFlash');
-        console.log('or bar interval entered')
+//        console.log('or bar interval entered')
     }, 500);   
     $pipeBar.click(function() {
-        console.log("OR Bar clicked!");
+//        console.log("OR Bar clicked!");
         clearInterval(clkIntOrBar);
         visualizerAudioSrc = 'assets/emptyAudio.mp3';
         updateAudioSrc();
@@ -339,7 +360,23 @@ function flashOrBar() {
         userLoopClickable = true;
         computerLoopClickable = true;
         instructionsClickable = true;
+        for (var i = 0; i < timeouts.length; i++) {
+            clearTimeout(timeouts[i]);
+        };
+        var stepCount = 0;
+        for (var i = 0; i <= 63 ; i++) {
+            clearInterval(intervals[i]);
+            stepCount += 4;
+        };
+        for (var i=0; i <= 63; i++) {
+            $('.kickSteps').eq(i).removeClass('metronome');
+            $('.snareSteps').eq(i).removeClass('metronome');
+            $('.hiHatCSteps').eq(i).removeClass('metronome');
+            $('.hiHatOpSteps').eq(i).removeClass('metronome');
+            stepCount += 4;
+        };
     });
+//    });
     setTimeout(function() {
         clearInterval(clkIntOrBar);
     }, 49000);
@@ -382,9 +419,7 @@ if (!victory) {
             computerLoopClickable = false;
             instructionsClickable = false;
             userLoopClickable = false;
-//            visualizerAudioSrc = 'assets/kickEdit.mp3';
-//            updateAudioSrc();
-//            audio.play();
+//            haltUserLoop();
         if (e.target.innerHTML === "play_your_wanna_beat" || "acc3ptable sauce") {
             e.target.innerHTML = "that_sauce_is_w3ak";
 //            if (victory) { 
@@ -486,6 +521,29 @@ function frameLooper(){
 //    audio.play();
 //    }
 //)
+
+//// tooltip kit
+(function () {
+    var ID = "tooltip", CLS_ON = "tooltip_ON", FOLLOW = true,
+    DATA = "_tooltip", OFFSET_X = 20, OFFSET_Y = 10,
+    showAt = function (e) {
+        var ntop = e.pageY + OFFSET_Y, nleft = e.pageX + OFFSET_X;
+        $("#" + ID).html($(e.target).data(DATA)).css({
+            position: "absolute", top: ntop, left: nleft
+        }).show();
+    };
+    $(document).on("mouseenter", "*[title]", function (e) {
+        $(this).data(DATA, $(this).attr("title"));
+        $(this).removeAttr("title").addClass(CLS_ON);
+        $("<div id='" + ID + "' />").appendTo("body");
+        showAt(e);
+    });
+    $(document).on("mouseleave", "." + CLS_ON, function (e) {
+        $(this).attr("title", $(this).data(DATA)).removeClass(CLS_ON);
+        $("#" + ID).remove();
+    });
+    if (FOLLOW) { $(document).on("mousemove", "." + CLS_ON, showAt); }
+}());
 
 //// BEATS:
 //// MEASURE 1: 00 01 02 03 | 04 05 06 07 | 08 09 10 11 | 12 13 14 15
