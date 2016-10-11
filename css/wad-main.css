@@ -186,21 +186,10 @@ canvas {
     float: left; 
 }
 
-footer {
-    clear: both;
-    font-family: 'VT323', monospace;
-    text-align: center;
+a {
+    text-decoration: none;
+    color: black;
 }
-
-/*
-@media (max-width: 1050px) {
-    #container {
-        background-color: black;
-        width: 480px;
-    }
-    
-}
-*/
 
 /* BACKGROUND IMG text
 _____$_____$_____$_____$_____$_____$_____$_____$

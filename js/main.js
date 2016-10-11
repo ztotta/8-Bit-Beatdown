@@ -124,13 +124,6 @@ function addMetronomeClass() {
     $('.hiHatOpSteps').eq(0).addClass('metronome');
 }
 
-function removeMetronomeClass() {
-    $('.kickSteps').eq(0).removeClass('metronome');
-    $('.snareSteps').eq(0).removeClass('metronome');
-    $('.hiHatCSteps').eq(0).removeClass('metronome');
-    $('.hiHatOpSteps').eq(0).removeClass('metronome');
-}
-
 function metronomeLightUp(className, stepCount) {
     for (var i=stepCount; i<stepCount+1; i++) {
         $(className).eq(i).addClass('metronome');
@@ -150,7 +143,6 @@ function metronome() {
            metronomeLightUp('.hiHatOpSteps', stepCount);
             stepCount += 4;
         }, beat * 250));
-        removeMetronomeClass();
     }
 }
 
