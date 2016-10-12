@@ -2,9 +2,7 @@
 var bpm = 95; 
 var beat = 160 / bpm;
 var loopMs = beat * 1000 * 4;
-var looper = true;
 var audio = new Audio();
-var fakeAudio = new Audio();
 audio.controls = false;
 audio.loop = false;
 audio.autoplay = false;
