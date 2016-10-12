@@ -12,7 +12,7 @@ When the user succeeds, the computer hands over its hardcopy of The Oregon Trail
 
 Do you have what it takes to put this outdated machine back in the storage basement for the good of humanity?
 
-Someone's gotta <a href="https://ztotta.github.io/8bitbeatdown/">do it</a>...
+Someone's gotta <a target="_blank" href="https://ztotta.github.io/8bitbeatdown/">do it</a>...
 
 
 ###Technologies Used:###
