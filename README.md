@@ -2,8 +2,9 @@
 #8-Bit-Beatdown#
 </center>
 
+<center>
 <img src="assets/8-bit-beatdown-img.png"/>
-
+</center>
 ###The Game:###
 8-Bit-Beatdown is an electronic drum-off between the user and an old computer that thinks it has rhythm. The computer lays down an "objectively calculated" "beat to end all beats" that it challenges the user to recreate it with their "limited human processing power", wagering its hardcopy of The Oregon Trail as bait. 
 
