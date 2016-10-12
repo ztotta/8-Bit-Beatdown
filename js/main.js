@@ -1,7 +1,7 @@
 //// #_____8_Bit_Beatdown_____# ////
 var bpm = 95; 
 var beat = 160 / bpm;
-var loopMs = beat * 1000 * 4;
+var loopMs = beat * 1000 * 4; 
 var audio = new Audio();
 audio.controls = false;
 audio.loop = false;
