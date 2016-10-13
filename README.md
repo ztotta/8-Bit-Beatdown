@@ -20,6 +20,6 @@ The skeleton of this game is built on HTML & CSS, while Javascript & JQuery powe
 
 The Web Audio DAW (digital audio workstation) project, Wad.js, is leveraged to handle the creation of the drum element sounds on click, and Logic Pro X was used for the recording and mixing of other audio employed in the game.  
 
-The Web Audio API comes in handy for processing the audio visualizations which are then displayed through the HTML5 canvas element. 
+The Web Audio API is used for processing the audio visualizations which are then displayed through the HTML5 canvas element. 
 ###Next Steps:###
-From here I would like to build a set of "drum machines" that incorporates melodic and rhythmic instruments and allows for real-time audio manipulation/mixing (i.e. reverb, volume, FX, and EQ levels) and real-time collaboration across clients, allowing for live, collaborative looping with anyone in the world. 
+From here I would like to build a set of drum-machines that incorporates melodic and rhythmic instruments and allows for real-time audio manipulation/mixing (i.e. reverb, volume, FX, and EQ levels) as well as real-time jamming across clients, allowing for live, collaborative looping with anyone in the world. 
