@@ -1,4 +1,6 @@
 //// #_____8_Bit_Beatdown_____# ////
+
+//// Assign global variables: 
 var bpm = 95; 
 var beat = 160 / bpm;
 var loopMs = beat * 1000 * 4; 
