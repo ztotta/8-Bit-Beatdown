@@ -1,6 +1,10 @@
 <center>
 #8-Bit-Beatdown#
+### A browser game
+##### by Zach Totta
+##### Play it [Here](https://ztotta.github.io/8bitbeatdown/)
 </center>
+--
 
 <center>
 <img src="assets/8-bit-beatdown-img.png"/>
@@ -14,6 +18,8 @@ Do you have what it takes to put this outdated machine back in the storage basem
 
 Someone's gotta <a target="_blank" href="https://ztotta.github.io/8bitbeatdown/">do it</a>...
 
+--
+
 
 ###Technologies Used:###
 The skeleton of this game is built on HTML & CSS, while Javascript & JQuery power the user interaction and user experience through DOM-manipulation and obsessively bundled for-loops. 
@@ -23,5 +29,12 @@ The Web Audio DAW (digital audio workstation) project, Wad.js, is leveraged to h
 The Web Audio API is used for processing the audio visualizations which are then displayed through the HTML5 canvas element. 
 
 Concerning the code, I'm proud of the naming conventions that allowed for many instances of for-loop automation in assigning id's, classes, boolean values, and precise musical timing to the 4 instruments' 256 steps/notes on the drum machine. 
+
+The biggest challenge here was getting the loops to trigger only the user-selected notes and for them to actually play in tempo. This was achieved with for loops and setTimeouts that incremented by 1/16th note's time on each iteration.
+
+##### Loop snippet:
+![loop-snippet](https://github.com/ztotta/8bitbeatdown/blob/master/assets/loops2.png?raw=true)
+--
+
 ###Next Steps:###
 From here I would like to build a set of drum-machines that incorporates melodic and rhythmic instruments and allows for real-time audio manipulation/mixing (i.e. reverb, volume, FX, and EQ levels) as well as real-time jamming across clients, allowing for live, collaborative looping with anyone in the world. 

@@ -73,11 +73,13 @@ function stepListenerMaker(bool, id, wad) {
     for (var i=0; i<=63; i++) {
         if (event.target.id === id + i) {
             if (bool[i] === false) { 
-                bool[i] = true; $(event.target).addClass('litSteps'); 
+                bool[i] = true; 
+                $(event.target).addClass('litSteps'); 
                 wad.play(); /// could concatenate bool-'Bool'?
             }
             else { 
-                bool[i] = false; $(event.target).removeClass('litSteps');
+                bool[i] = false; 
+                $(event.target).removeClass('litSteps');
                 stepRemoveFx.play();
             } 
         }
@@ -91,8 +93,8 @@ $('.kickSteps, .snareSteps, .hiHatCSteps, .hiHatOpSteps').click(function(event) 
 })
 
 //// Build and launch corresponding loops for each instrument:
-//// Set timeout for each updateAudioSrc.
-var timeouts = [];
+//// Set timeout to reset the visualizer's source and trigger the sound.
+var timeouts = []; // each Timeout is pushed into this [] for batch canceling.
 function loopMaker(bool, src) {
     var beatCounter = 0;
     for (var i=0; i<=63; i++) {
@@ -101,7 +103,7 @@ function loopMaker(bool, src) {
                 updateAudioSrc(src);
             }, beat * beatCounter * 1000));
         };
-        beatCounter += 0.0625;
+        beatCounter += 0.0625; // increments by 1/16th note each time.
     }
 }
 
@@ -137,10 +139,10 @@ function metronome() {
         addMetronomeClass();
         var stepCount = 4;
         intervals.push(setInterval(function(metronomeInterval) {  
-           metronomeLightUp('.kickSteps', stepCount);
-           metronomeLightUp('.snareSteps', stepCount);
-           metronomeLightUp('.hiHatCSteps', stepCount);
-           metronomeLightUp('.hiHatOpSteps', stepCount);
+            metronomeLightUp('.kickSteps', stepCount);
+            metronomeLightUp('.snareSteps', stepCount);
+            metronomeLightUp('.hiHatCSteps', stepCount);
+            metronomeLightUp('.hiHatOpSteps', stepCount);
             stepCount += 4;
         }, beat * 250));
     }
